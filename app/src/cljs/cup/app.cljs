@@ -3,6 +3,8 @@
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
+(enable-console-print!)
+
 (def cities {
   "Paris" [2.352222 48.856614]
   "London" [-0.127758 51.507351]
@@ -69,7 +71,8 @@
         location (second location-item)
         years (clojure.string/split years-str #"-")
         start-year (int (first years))
-        end-year (int (last years))
+        ; NOTE: we do inc here because of range implementation
+        end-year (inc (int (last years)))
         years (range start-year end-year)]
     (doall
       (map
@@ -123,8 +126,10 @@
           )))
 
 (defn render-person [person]
-  (let [coordinates (get cities (:location person))]
-    (create-person-popup coordinates (:avatar person))))
+  (let [coordinates (get cities (:location person))
+        ui-control (create-person-popup coordinates (:avatar person))]
+    {:name (:name person)
+     :control ui-control}))
 
 (defn widget [data owner]
   (reify
@@ -132,14 +137,11 @@
     (render [this]
       (dom/h1 nil (:text data)))))
 
-(defn year-change-handler [e]
-  (.log js/console "You clicked my button! Congratulations" (dommy/value (sel1 :#years))))
-
 (defn add-all-to-map [items app-map]
   (doall
     (map
       (fn [item]
-        (.addTo item app-map))
+        (.addTo (:control item) app-map))
       items)))
 
 (defn remove-all-to-map [items]
@@ -148,24 +150,60 @@
       (.remove item))
     items))
 
-(defn render-for-year [year app-map]
-  (let [people (people-by-year expanded-people-data 1905)
-        ui-popups (doall (map render-person people))]
+
+(def state
+  (atom {
+      :map nil
+      :curr-year 1890
+      :prev-year nil
+      :curr-people nil
+      :prev-people nil
+  }))
+
+
+(defn create-people-controls [people]
+  (doall (map render-person people)))
+
+(defn render-for-year [year]
+  (println "render for year" year)
+  (let [app-map (:map @state)
+        people (people-by-year expanded-people-data year)
+        people-to-popups (create-people-controls people)]
       (do
-        (js/console.log "people by year" (first ui-popups) (-> people count) year)
-        (add-all-to-map ui-popups app-map))))
+        (println "people by year" year people)
+        (add-all-to-map people-to-popups app-map))))
+
+(defn render-changed [new-year]
+  (if-let [prev-year (:prev-year @state)]
+    ; do something when prev year exists
+    1
+    ; first-time render
+    2
+  )
+  )
+
+(defn year-change-handler [e]
+  (let [new-year (dommy/value (sel1 :#years))
+        curr-year (:curr-year @state)]
+    (println "year-changed from " curr-year " to " new-year state)
+    (swap! state assoc :curr-year new-year :prev-year curr-year)))
 
 (defn init []
+  (println "init")
+  (dommy/unlisten! (sel1 :#years) :change year-change-handler)
   (dommy/listen! (sel1 :#years) :change year-change-handler)
-
   (aset js/mapboxgl "accessToken" "pk.eyJ1IjoiaGFzaG9iamVjdCIsImEiOiJjaWh0ZWU4MjkwMTdsdGxtMWIzZ3hnbnVqIn0.RQjfkzc1hI2UuR0vzjMtJQ")
   (let [props (js-obj "container" "map"
                       "zoom" 1
                       "center" (clj->js [12.496366 41.902784])
                       "style" "mapbox://styles/mapbox/streets-v8")
         app-map (js/mapboxgl.Map. props)]
-    (render-for-year 1925 app-map)
+    ; save map into state atom
+    (swap! state assoc :map app-map)
+    ; save map into windown
     (aset js/window "appMap" app-map)
+    (render-for-year (:curr-year @state))
+
 
     (om/root widget
             {:text ""}
