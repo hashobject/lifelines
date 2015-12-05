@@ -97,6 +97,13 @@
               (assoc person :locations expanded)))
       people-data)))
 
+(defn find-location-for-year [year locations]
+  (first
+    (filter
+      (fn [location]
+        (= (int year) (-> location first int)))
+      locations)))
+
 (defn people-by-year [people-data year]
   (remove
     (fn [person]
@@ -104,15 +111,16 @@
     (map
       (fn [person]
         (let [locations (:locations person)
-              location-for-year
-                ; TODO: for now support one location for one person per year
-                (first
-                  (filter
-                    (fn [location]
-                      (= year (first location)))
-                    locations))]
-              (assoc person :year (first location-for-year)
-                            :location (second location-for-year))))
+              ; TODO: for now support one location for one person per year
+              location-for-year (find-location-for-year year locations)]
+              (if (nil? location-for-year)
+                (do
+                  (println (:name person) "had no location in" year)
+                  person)
+                (do
+                  (println (:name person) "was in" (second location-for-year) "in" year)
+                  (assoc person :year (first location-for-year)
+                                :location (second location-for-year))))))
       people-data)))
 
 
@@ -171,27 +179,38 @@
         people-to-popups (create-people-controls people)]
       (do
         (println "people by year" year people)
-        (add-all-to-map people-to-popups app-map))))
+        (add-all-to-map people-to-popups app-map)
+        people-to-popups)))
 
-(defn render-changed [new-year]
+(defn render-people [new-year]
+  (println "render people on the map for" new-year)
   (if-let [prev-year (:prev-year @state)]
     ; do something when prev year exists
-    1
+    (do
+      (println "previous data found. more comple logic is coming")
+      (let [people (people-by-year expanded-people-data new-year)]
+        (println "new people" (count people) new-year)
+      )
+      )
     ; first-time render
-    2
-  )
-  )
+    (let [people-to-popups (render-for-year new-year)]
+      (swap! state assoc
+              :curr-year new-year
+              :curr-people people-to-popups))))
 
 (defn year-change-handler [e]
   (let [new-year (dommy/value (sel1 :#years))
-        curr-year (:curr-year @state)]
+        curr-year (:curr-year @state)
+        curr-people (:curr-people @state)]
     (println "year-changed from " curr-year " to " new-year state)
-    (swap! state assoc :curr-year new-year :prev-year curr-year)))
+    (swap! state assoc
+            :curr-year new-year
+            :prev-year curr-year
+            :curr-people []
+            :prev-people curr-people)
+    (render-people new-year)))
 
-(defn init []
-  (println "init")
-  (dommy/unlisten! (sel1 :#years) :change year-change-handler)
-  (dommy/listen! (sel1 :#years) :change year-change-handler)
+(defn create-map []
   (aset js/mapboxgl "accessToken" "pk.eyJ1IjoiaGFzaG9iamVjdCIsImEiOiJjaWh0ZWU4MjkwMTdsdGxtMWIzZ3hnbnVqIn0.RQjfkzc1hI2UuR0vzjMtJQ")
   (let [props (js-obj "container" "map"
                       "zoom" 1
@@ -201,10 +220,18 @@
     ; save map into state atom
     (swap! state assoc :map app-map)
     ; save map into windown
-    (aset js/window "appMap" app-map)
-    (render-for-year (:curr-year @state))
+    (aset js/window "appMap" app-map)))
+
+(create-map)
+(render-people (:curr-year @state))
+
+(defn init []
+  (println "init")
 
 
-    (om/root widget
-            {:text ""}
-            {:target (. js/document (getElementById "container"))})))
+  (dommy/unlisten! (sel1 :#years) :change year-change-handler)
+  (dommy/listen! (sel1 :#years) :change year-change-handler)
+
+  (om/root widget
+          {:text ""}
+          {:target (. js/document (getElementById "container"))}))
