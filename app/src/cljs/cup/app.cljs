@@ -4,7 +4,15 @@
 
 (def cities {
   "Paris" [2.352222 48.856614]
-  "London" [-0.127758 51.507351]})
+  "London" [-0.127758 51.507351]
+  "Zurich" [8.541694 47.376887]
+  "Bern" [7.447447 46.947974]
+  "Berlin" [13.404954 52.520007]
+  "Princeton" [-74.667223 40.357298]
+  "Trieste" [13.776818 45.649526]
+  "Rome" [12.496366 41.902784]
+
+  })
 
 (def people-data '(
   {:name "Mahatma Gandhi"
@@ -42,7 +50,7 @@
   }}
   {:name "Salvador Dalí"
    :link "https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD"
-   :avatar "https://en.wikipedia.org/wiki/File:Salvador_Dal%C3%AD_1939.jpg"
+   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Salvador_Dal%C3%AD_1939.jpg/440px-Salvador_Dal%C3%AD_1939.jpg"
    :locations {
     "1925-1929" "Paris"
    }}))
@@ -74,14 +82,27 @@
       (fn [person]
         (let [locations (:locations person)
               expanded (expand-locations locations)]
-              (assoc person :locs expanded)))
+              (assoc person :locations expanded)))
       people-data)))
 
+(defn people-by-year [people-data year]
+  (remove
+    (fn [person]
+      (nil? (:year person)))
+    (map
+      (fn [person]
+        (let [locations (:locations person)
+              location-for-year
+                ; TODO: for now support one location for one person per year
+                (first
+                  (filter
+                    (fn [location]
+                      (= year (first location)))
+                    locations))]
+              (assoc person :year (first location-for-year)
+                            :location (second location-for-year))))
+      people-data)))
 
-(def people
-  '({:name "Ernest Hemingway" :year "1930" :location "Paris" :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ernest_Hemingway_1923_passport_photo.jpg/440px-Ernest_Hemingway_1923_passport_photo.jpg"}
-    {:name "Pablo Picasso" :year "1930" :location "Paris" :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Pablo_Picasso%2C_1904%2C_Paris%2C_photograph_by_Ricard_Canals_i_Llamb%C3%AD.jpg/440px-Pablo_Picasso%2C_1904%2C_Paris%2C_photograph_by_Ricard_Canals_i_Llamb%C3%AD.jpg"}
-    {:name "Gandhi" :year "1914" :location "London" :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Portrait_Gandhi.jpg/400px-Portrait_Gandhi.jpg"}))
 
 (defn create-person-popup [coordinates avatar map]
   (let [person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
@@ -107,7 +128,9 @@
   (let [props (js-obj "container" "map"
                       "zoom" 0
                       "style" "mapbox://styles/mapbox/streets-v8")
-        app-map (js/mapboxgl.Map. props)]
+        app-map (js/mapboxgl.Map. props)
+        people (people-by-year expanded-people-data 1905)]
+    (js/console.log "people by year" (-> people count))
     (doall
       (map
         (fn [person]
@@ -117,5 +140,5 @@
     (aset js/window "appMap" app-map)
 
     (om/root widget
-            {:text "Hello world3!"}
+            {:text ""}
             {:target (. js/document (getElementById "container"))})))
