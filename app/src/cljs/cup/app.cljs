@@ -6,6 +6,78 @@
   "Paris" [2.352222 48.856614]
   "London" [-0.127758 51.507351]})
 
+(def people-data '(
+  {:name "Mahatma Gandhi"
+   :link "https://en.wikipedia.org/wiki/Mahatma_Gandhi#English_barrister"
+   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Portrait_Gandhi.jpg/400px-Portrait_Gandhi.jpg"
+   :locations {
+    "1888-1891" "London"}}
+  {:name "Ernest Hemingway"
+   :link "https://en.wikipedia.org/wiki/Ernest_Hemingway"
+   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ernest_Hemingway_1923_passport_photo.jpg/440px-Ernest_Hemingway_1923_passport_photo.jpg"
+   :locations {
+    "1921-1928" "Paris"
+    "1944-1945" "London"}}
+  {:name "Albert Einstein"
+   :link "https://en.wikipedia.org/wiki/Albert_Einstein"
+   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Einstein_patentoffice.jpg/340px-Einstein_patentoffice.jpg"
+   :locations {
+    "1896-1900" "Zurich"
+    "1900-1904" "Bern"
+    "1905-1914" "Zurich"
+    "1914-1921" "Berlin"
+    "1933-1955" "Princeton"
+   }}
+ {:name "James Joyce"
+  :link "https://en.wikipedia.org/wiki/James_Joyce"
+  :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Revolutionary_Joyce_Better_Contrast.jpg/440px-Revolutionary_Joyce_Better_Contrast.jpg"
+  :locations {
+   "1905-1906" "Trieste"
+   "1906-1907" "Rome"
+   "1907-1909" "Trieste"
+   "1915-1920" "Zurich"
+   "1920-1940" "Paris"
+   "1931-1931" "London"
+   "1941-1941" "Zurich"
+  }}
+  {:name "Salvador Dalí"
+   :link "https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD"
+   :avatar "https://en.wikipedia.org/wiki/File:Salvador_Dal%C3%AD_1939.jpg"
+   :locations {
+    "1925-1929" "Paris"
+   }}))
+
+(defn expand-location [location-item]
+  (let [years-str (first location-item)
+        location (second location-item)
+        years (clojure.string/split years-str #"-")
+        start-year (int (first years))
+        end-year (int (last years))
+        years (range start-year end-year)]
+    (doall
+      (map
+        (fn [year]
+          [year location])
+        years))))
+
+(defn flatten-one-level [coll]
+  (mapcat  #(if (sequential? %) % [%]) coll))
+
+(defn expand-locations [locations]
+  (flatten-one-level
+    (map expand-location locations)))
+
+
+(def expanded-people-data
+  (doall
+    (map
+      (fn [person]
+        (let [locations (:locations person)
+              expanded (expand-locations locations)]
+              (assoc person :locs expanded)))
+      people-data)))
+
+
 (def people
   '({:name "Ernest Hemingway" :year "1930" :location "Paris" :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ernest_Hemingway_1923_passport_photo.jpg/440px-Ernest_Hemingway_1923_passport_photo.jpg"}
     {:name "Pablo Picasso" :year "1930" :location "Paris" :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Pablo_Picasso%2C_1904%2C_Paris%2C_photograph_by_Ricard_Canals_i_Llamb%C3%AD.jpg/440px-Pablo_Picasso%2C_1904%2C_Paris%2C_photograph_by_Ricard_Canals_i_Llamb%C3%AD.jpg"}
