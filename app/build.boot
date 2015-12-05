@@ -7,6 +7,7 @@
                  [pandeiro/boot-http        "0.6.3"      :scope "test"]
                  [org.clojure/clojurescript "1.7.122"]
                  [org.omcljs/om "0.8.6"]
+                 [prismatic/dommy "1.1.0"]
                  [org.martinklepsch/boot-garden "1.2.5-3" :scope "test"]])
 
 (require
