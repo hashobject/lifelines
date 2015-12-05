@@ -1,5 +1,6 @@
 (ns cup.app
-  (:require [om.core :as om :include-macros true]
+  (:require [dommy.core :as dommy :refer-macros [sel sel1]]
+            [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
 (def cities {
@@ -11,7 +12,7 @@
   "Princeton" [-74.667223 40.357298]
   "Trieste" [13.776818 45.649526]
   "Rome" [12.496366 41.902784]
-
+  "Vienna" [16.373819 48.208174]
   })
 
 (def people-data '(
@@ -53,7 +54,15 @@
    :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Salvador_Dal%C3%AD_1939.jpg/440px-Salvador_Dal%C3%AD_1939.jpg"
    :locations {
     "1925-1929" "Paris"
-   }}))
+   }}
+  {:name "Sigmund Freud"
+   :link "https://en.wikipedia.org/wiki/Sigmund_Freud#Escape_from_Nazism"
+   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Sigmund_Freud_LIFE.jpg/400px-Sigmund_Freud_LIFE.jpg"
+   :locations {
+     "1881-1938" "Vienna"
+     "1938-1939" "London"
+     }}
+   ))
 
 (defn expand-location [location-item]
   (let [years-str (first location-item)
@@ -104,18 +113,18 @@
       people-data)))
 
 
-(defn create-person-popup [coordinates avatar map]
+(defn create-person-popup [coordinates avatar]
   (let [person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
         html (str "<img width='40px' src='" avatar "'>")]
         (do
           (.setLngLat person-popup (clj->js coordinates))
           (.setHTML person-popup html)
-          (.addTo person-popup map)
+          person-popup
           )))
 
-(defn render-person [person map]
+(defn render-person [person]
   (let [coordinates (get cities (:location person))]
-    (create-person-popup coordinates (:avatar person) map)))
+    (create-person-popup coordinates (:avatar person))))
 
 (defn widget [data owner]
   (reify
@@ -123,20 +132,39 @@
     (render [this]
       (dom/h1 nil (:text data)))))
 
+(defn year-change-handler [e]
+  (.log js/console "You clicked my button! Congratulations" (dommy/value (sel1 :#years))))
+
+(defn add-all-to-map [items app-map]
+  (doall
+    (map
+      (fn [item]
+        (.addTo item app-map))
+      items)))
+
+(defn remove-all-to-map [items]
+  (map
+    (fn [item]
+      (.remove item))
+    items))
+
+(defn render-for-year [year app-map]
+  (let [people (people-by-year expanded-people-data 1905)
+        ui-popups (doall (map render-person people))]
+      (do
+        (js/console.log "people by year" (first ui-popups) (-> people count) year)
+        (add-all-to-map ui-popups app-map))))
+
 (defn init []
+  (dommy/listen! (sel1 :#years) :change year-change-handler)
+
   (aset js/mapboxgl "accessToken" "pk.eyJ1IjoiaGFzaG9iamVjdCIsImEiOiJjaWh0ZWU4MjkwMTdsdGxtMWIzZ3hnbnVqIn0.RQjfkzc1hI2UuR0vzjMtJQ")
   (let [props (js-obj "container" "map"
-                      "zoom" 0
+                      "zoom" 1
+                      "center" (clj->js [12.496366 41.902784])
                       "style" "mapbox://styles/mapbox/streets-v8")
-        app-map (js/mapboxgl.Map. props)
-        people (people-by-year expanded-people-data 1905)]
-    (js/console.log "people by year" (-> people count))
-    (doall
-      (map
-        (fn [person]
-          (render-person person app-map)
-        )
-        people))
+        app-map (js/mapboxgl.Map. props)]
+    (render-for-year 1925 app-map)
     (aset js/window "appMap" app-map)
 
     (om/root widget

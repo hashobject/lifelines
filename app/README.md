@@ -10,6 +10,10 @@ Curie
 Ezra Pound
 Charles Chaplin
 Karl Marx
+Freud
+Camus
+Sartre
+Remarque
 
 ## Other visualizations
 
