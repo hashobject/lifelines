@@ -1,0 +1,3 @@
+{:require  [cup.app]
+ :init-fns [cup.app/init]
+ :compiler-options {:asset-path "js/app.out"}}
