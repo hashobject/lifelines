@@ -105,6 +105,9 @@
 (defn flatten-one-level [coll]
   (mapcat  #(if (sequential? %) % [%]) coll))
 
+(defn find-first [f coll]
+  (first (filter f coll)))
+
 (defn expand-locations [locations]
   (flatten-one-level
     (map expand-location locations)))
@@ -146,9 +149,10 @@
       people-data)))
 
 
-(defn create-person-popup [coordinates avatar]
+(defn create-person-popup [coordinates color]
   (let [person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
-        html (str "<img width='40px' src='" avatar "'>")]
+        ;(str "<img width='40px' src='" avatar "'>")
+        html (str "<div class='person-marker' style='background-color:" color "'></div>")]
         (do
           (.setLngLat person-popup (clj->js coordinates))
           (.setHTML person-popup html)
@@ -157,15 +161,10 @@
 
 (defn render-person [person]
   (let [coordinates (get cities (:location person))
-        ui-control (create-person-popup coordinates (:avatar person))]
+        ui-control (create-person-popup coordinates (:color person))]
     {:name (:name person)
      :control ui-control}))
 
-(defn widget [data owner]
-  (reify
-    om/IRender
-    (render [this]
-      (dom/h1 nil (:text data)))))
 
 (defn add-all-to-map [items app-map]
   (doall
@@ -281,6 +280,29 @@
     (aset js/window "appMap" app-map)))
 
 
+(defn people-widget [data owner]
+  (reify
+    om/IRender
+    (render [this]
+      (let [curr-people-names (map :name (:curr-people data))
+            people
+              (map
+                (fn [name]
+                  (find-first
+                    (fn [person]
+                      (= name (:name person))
+                    )
+                    expanded-people-data)
+                  )
+                curr-people-names)]
+        (apply dom/ul nil
+          (map
+            (fn [person]
+              (dom/li nil (:name person))
+              )
+            people)
+          )))))
+
 (create-map)
 (render-people (:curr-year @state))
 
@@ -292,6 +314,6 @@
   (println "init")
   (dommy/listen! (sel1 :#years) :change year-change-handler)
 
-  (om/root widget
-          {:text ""}
-          {:target (. js/document (getElementById "container"))}))
+  (om/root people-widget
+          state
+          {:target (. js/document (getElementById "people"))}))

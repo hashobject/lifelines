@@ -17,7 +17,16 @@
         :background "inherit"
         :box-shadow "none"
         }]
-      [:div.mapboxgl-popup-content :img {
-        :border-radius "20px"
+      [:div.person-marker {
+        :display "block"
+        :width "16px"
+        :height "16px"
+        :border-radius "8px"
+        :padding 0
+        }]
+      [:div#people {
+        :display "block"
+        :z-index 1
+        :position "relative"
         }]
     ]))
