@@ -304,9 +304,45 @@
 (create-map)
 (render-people (:curr-year @state))
 
+(defn sort-set [c]
+  (sort (set c)))
+
+(defn find-all-byears [people]
+  (sort-set
+    (map
+      (fn [person]
+        (-> person :locations first first))
+      people)))
+
+(defn find-all-dyears [people]
+  (sort-set
+    (map
+      (fn [person]
+        (-> person :locations last first))
+      people)))
+
+(defn find-all-touch-years [people]
+  (sort
+    (cs/union
+      (find-all-byears people)
+      (find-all-dyears people))))
+
+(defn render-timeline []
+  (let [$range (sel1 :#years)
+        $range-width (-> $range dommy/bounding-client-rect :width)
+        years (find-all-touch-years expanded-people-data)
+        min-year (first years)
+        max-year (last years)]
+    (dommy/set-attr! $range :min min-year)
+    (dommy/set-attr! $range :max max-year)    
+    (println "width>>>>" $range-width years min-year)
+  ))
 ;(dommy/unlisten! (sel1 :#years) :change year-change-handler)
 
+
 (println "exec")
+
+(render-timeline)
 (defn init []
   (enable-console-print!)
   (println "init")

@@ -28,6 +28,12 @@
         :width "30px"
         :border-radius "15px"
       }]
+      [:div#years-control {
+        :width "100%"
+      }]
+      [:input#years {
+        :width "100%"
+      }]
       [:div#people {
         :display "block"
         :z-index 1
