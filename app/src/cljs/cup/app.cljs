@@ -180,7 +180,7 @@
           "<div class='person-marker' "
           " data-name='" name "' "
           "style='background-color:" color "'>"
-          "<div class='person' style='border-color='"
+          "<div class='person open' style='border-color:"
           color
           "'>"
           "<img class='avatar' src='" avatar "'>"

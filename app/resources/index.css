@@ -66,6 +66,11 @@ body {
   width: auto;
 }
 
+.person.open {
+  width: auto;
+  min-width: 200px;
+}
+
 .person img {
   width: 40px;
   height: 40px;

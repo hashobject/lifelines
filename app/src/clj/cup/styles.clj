@@ -46,7 +46,7 @@
         }
         [:div.person {
           :position "absolute"
-          :top "-20px"
+          :top "-55px"
           :left "-30px"
           :display "none"
           }
