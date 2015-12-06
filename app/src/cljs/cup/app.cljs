@@ -7,12 +7,16 @@
 (enable-console-print!)
 
 (def cities {
+  "A Coruña" [43.362344,-8.41154]
   "Aarau" [47.390434,8.045701]
+  "Allegheny, Pennsylvania" [40.445081,-80.008775]
   "Avignon" [43.949317,4.805528]
+  "Baltimore, Maryland" [39.290385,-76.612189]
   "Barcelona" [41.385064,2.173403]
   "Berlin" [52.520007,13.404954]
   "Bern" [46.947974,7.447447]
   "Bordeaux" [44.837789,-0.57918]
+  "Cambridge, Massachusetts" [42.373616,-71.109733]
   "Chicago" [41.878114,-87.629798]
   "Dublin" [53.349805,-6.26031]
   "Figueres" [42.265507,2.958105]
@@ -21,14 +25,17 @@
   "Kansas City, Missouri" [39.099727,-94.578567]
   "Ketchum, Idaho" [43.68074,-114.363662]
   "Key West" [24.555059,-81.779987]
+  "Kinshasa" [-4.441931,15.266293]
   "Leipzig" [51.339696,12.373075]
   "London" [51.507351,-0.127758]
+  "Los Angeles" [34.07362,-118.400356]
   "Madrid" [40.416775,-3.70379]
   "Milan" [45.465422,9.185924]
   "Munich" [48.135125,11.581981]
   "Málaga" [36.721261,-4.421266]
   "New York" [40.712784,-74.005941]
   "Oak Park, Illinois" [41.885032,-87.784503]
+  "Oakland, California" [37.804364,-122.271114]
   "Pamplona" [42.812526,-1.645775]
   "Paris" [48.856614,2.352222]
   "Pavia" [45.184725,9.158207]
@@ -58,7 +65,7 @@
   {:name "Gertrude Stein"
    :link "https://en.wikipedia.org/wiki/Gertrude_Stein"
    :avatar "img/stein.png"
-   :color "#9C27B0"
+   :color "#E040FB"
    :locations {
     "1874-1877" "Allegheny, Pennsylvania"
     "1877-1877" "Vienna"
@@ -70,7 +77,7 @@
     "1902-1903" "London"
     "1903-1934" "Paris"
     "1934-1934" "New York"
-    "1934-1935" "Beverly Hills, California"
+    "1934-1935" "Los Angeles"
     "1935-1946" "Paris"
     }}
   {:name "Ernest Hemingway"
@@ -472,7 +479,7 @@
   (aset js/mapboxgl "accessToken" "pk.eyJ1IjoiaGFzaG9iamVjdCIsImEiOiJjaWh0ZWU4MjkwMTdsdGxtMWIzZ3hnbnVqIn0.RQjfkzc1hI2UuR0vzjMtJQ")
   (let [props (js-obj "container" "map"
                       "zoom" 2
-                      "center" (clj->js [-15.496366 41.902784])
+                      "center" (clj->js [-21.496366 41.902784])
                       "style" "mapbox://styles/mapbox/streets-v8")
         app-map (js/mapboxgl.Map. props)]
     ; save map into state atom
@@ -587,7 +594,7 @@
 
 (println "exec")
 
-;(println "all cities>>" (clojure.string/join "\n" (find-all-cities people-data)))
+(println "all cities>>" (clojure.string/join "\n" (find-all-cities people-data)))
 
 ;(println "byears>>>" (sort-set (map :byear expanded-people-data)))
 ;(println "dyears>>>" (sort-set (map :dyear expanded-people-data)))
