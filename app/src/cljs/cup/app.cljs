@@ -108,6 +108,13 @@
 (defn find-first [f coll]
   (first (filter f coll)))
 
+(defn position [x coll & {:keys [from-end all] :or {from-end false all false}}]
+  (let [all-idxs (keep-indexed (fn [idx val] (when (= val x) idx)) coll)]
+  (cond
+   (true? from-end) (last all-idxs)
+   (true? all)      all-idxs
+   :else            (first all-idxs))))
+
 (defn expand-locations [locations]
   (flatten-one-level
     (map expand-location locations)))
@@ -328,14 +335,29 @@
       (find-all-dyears people))))
 
 (defn render-timeline []
-  (let [$range (sel1 :#years)
+  (let [$range-labels (sel1 :#years-labels)
+        $range (sel1 :#years)
         $range-width (-> $range dommy/bounding-client-rect :width)
-        years (find-all-touch-years expanded-people-data)
-        min-year (first years)
-        max-year (last years)]
+        touch-years (find-all-touch-years expanded-people-data)
+        min-year (first touch-years)
+        max-year (last touch-years)
+        all-years (sort-set (range min-year (inc max-year)))
+        years-count (- max-year min-year)
+        year-width (/ $range-width years-count)
+        labels-html
+          (map
+            (fn [year]
+              (let [index (position year all-years)
+                    offset (* index year-width)]
+              (str "<li style='left:"  offset "px'>" year "</li>"))
+              )
+            touch-years)
+        html-str (clojure.string/join "" labels-html)]
     (dommy/set-attr! $range :min min-year)
-    (dommy/set-attr! $range :max max-year)    
-    (println "width>>>>" $range-width years min-year)
+    (dommy/set-attr! $range :max max-year)
+    (dommy/set-html! $range-labels html-str)
+    (println "width>>>>" $range-width years min-year year-width)
+    (println "xxxx>>>>" html-str)
   ))
 ;(dommy/unlisten! (sel1 :#years) :change year-change-handler)
 
@@ -347,7 +369,9 @@
   (enable-console-print!)
   (println "init")
   (dommy/listen! (sel1 :#years) :change year-change-handler)
-
+  (dommy/listen! (sel1 :body) :click (fn [el]
+    (println "clicked>>>>" el)
+    ))
   (om/root people-widget
           state
           {:target (. js/document (getElementById "people"))}))
