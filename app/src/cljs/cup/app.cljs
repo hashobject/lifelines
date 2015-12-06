@@ -312,7 +312,8 @@
             (fn [person]
               (dom/li #js {:className "person" :style #js {:borderColor (:color person)}}
                 (dom/img #js{:className "avatar" :src (:avatar person)})
-                (dom/span nil (:name person))
+                (dom/div #js {:className "data"}
+                  (dom/span #js {:className "name"} (:name person)))
                 )
               )
             people)
