@@ -7,15 +7,18 @@
 (enable-console-print!)
 
 (def cities {
-  "Paris" [2.352222 48.856614]
-  "London" [-0.127758 51.507351]
-  "Zurich" [8.541694 47.376887]
-  "Bern" [7.447447 46.947974]
   "Berlin" [13.404954 52.520007]
+  "Bern" [7.447447 46.947974]
+
+  "London" [-0.127758 51.507351]
+
+  "Paris" [2.352222 48.856614]
   "Princeton" [-74.667223 40.357298]
-  "Trieste" [13.776818 45.649526]
   "Rome" [12.496366 41.902784]
+  "Trieste" [13.776818 45.649526]
+
   "Vienna" [16.373819 48.208174]
+  "Zurich" [8.541694 47.376887]
   })
 
 (def people-data '(
@@ -98,10 +101,6 @@
      }}
    ))
 
-(defn find-all-cities [people]
-  (set (flatten (map #(vals (:locations %)) people))))
-
-
 (defn expand-location [location-item]
   (let [years-str (first location-item)
         location (second location-item)
@@ -116,6 +115,10 @@
           [year location])
         years))))
 
+(defn sort-set [c]
+  (sort (set c)))
+
+
 (defn flatten-one-level [coll]
   (mapcat  #(if (sequential? %) % [%]) coll))
 
@@ -128,6 +131,9 @@
    (true? from-end) (last all-idxs)
    (true? all)      all-idxs
    :else            (first all-idxs))))
+
+   (defn find-all-cities [people]
+     (sort-set (flatten (map #(vals (:locations %)) people))))
 
 (defn expand-locations [locations]
   (flatten-one-level
@@ -351,9 +357,6 @@
 
 (create-map)
 (render-people (:curr-year @state))
-
-(defn sort-set [c]
-  (sort (set c)))
 
 (defn find-all-byears [people]
   (sort-set
