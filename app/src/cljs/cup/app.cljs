@@ -68,8 +68,10 @@
     "1893-1897" "Cambridge, Massachusetts"
     "1897-1902" "Baltimore, Maryland"
     "1902-1903" "London"
-    "1903-1903" "Paris"
-    "1903-1946" "Neuilly-sur-Seine"
+    "1903-1934" "Paris"
+    "1934-1934" "New York"
+    "1934-1935" "Beverly Hills, California"
+    "1935-1946" "Paris"
     }}
   {:name "Ernest Hemingway"
    :link "https://en.wikipedia.org/wiki/Ernest_Hemingway"
