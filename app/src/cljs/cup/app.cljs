@@ -153,11 +153,13 @@
         (.addTo (:control item) app-map))
       items)))
 
-(defn remove-all-to-map [items]
-  (map
-    (fn [item]
-      (.remove item))
-    items))
+(defn remove-all-from-map [items]
+  (doall
+    (map
+      (fn [item]
+        (println "removing item" (:name item))
+        (.remove (:control item)))
+      items)))
 
 
 (defonce state
@@ -204,13 +206,23 @@
             new-names (set (map :name people))
             names-to-delete (cs/difference prev-names new-names)
             names-to-create (cs/difference new-names prev-names)
+            names-to-remain (cs/intersection new-names prev-names)
+            people-to-popups-to-remove (filter-people-by-names prev-people names-to-delete)
             people-to-create (filter-people-by-names people names-to-create)
-            created-people-to-popups (create-people-controls people-to-create)]
+            created-people-to-popups (create-people-controls people-to-create)
+            remained-people-to-popups (filter-people-by-names prev-people names-to-remain)
+            new-curr-people (concat remained-people-to-popups created-people-to-popups)]
         (println "people for the prev year" prev-names prev-year)
         (println "people for the new year" new-names new-year)
-        (println "names to delete" names-to-delete)
-        (println "names to create" names-to-create (count people-to-create))
+        (println "names to delete" names-to-delete (count people-to-popups-to-remove))
+        (println "names to remain" names-to-remain (count remained-people-to-popups))
+        (println "names to create" names-to-create  (count created-people-to-popups))
+        (println "new current people size" (count new-curr-people))
         (add-all-to-map created-people-to-popups app-map)
+        (remove-all-from-map people-to-popups-to-remove)
+        (swap! state assoc
+                :curr-year new-year
+                :curr-people new-curr-people)
       )
       )
     ; first-time render
@@ -255,7 +267,7 @@
 
 (println "exec")
 (defn init []
-
+  (enable-console-print!)
   (println "init")
   (dommy/listen! (sel1 :#years) :change year-change-handler)
 
