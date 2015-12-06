@@ -42,9 +42,11 @@
     "1894-1895" "Pavia"
     "1895-1896" "Aarau"
     "1896-1900" "Zurich"
-    "1900-1904" "Bern"
+    "1900-1905" "Bern"
     "1905-1914" "Zurich"
-    "1914-1921" "Berlin"
+    "1911-1912" "Prague"
+    "1912-1914" "Zurich"
+    "1914-1933" "Berlin"
     "1933-1955" "Princeton"
    }}
  {:name "James Joyce"
