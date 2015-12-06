@@ -450,7 +450,8 @@
 
 (defn year-change-handler [e]
   (println "attached listener event")
-  (let [new-year (dommy/value (sel1 :#years))
+  (let [$current-year (sel1 :.current-year)
+        new-year (dommy/value (sel1 :#years))
         curr-year (:curr-year @state)
         curr-people (:curr-people @state)]
     (println "year-changed from" curr-year "to" new-year state)
@@ -462,6 +463,7 @@
             :curr-people []
             :prev-people curr-people)
     (println "transaction. after" (:curr-year @state) (:prev-year @state) (map :name (:prev-people @state)))
+    (dommy/set-html! $current-year new-year)
     (render-people new-year)))
 
 (defn create-map []
