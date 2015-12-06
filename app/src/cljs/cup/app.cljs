@@ -219,7 +219,7 @@
               expanded (sort-by first (expand-locations locations))
               byear (->> expanded first first)
               dyear (->> expanded last first)]
-              (println "locations for person" (:name person) expanded)
+              ;(println "locations for person" (:name person) expanded)
               ;(println "selected byear for" (:name person) byear expanded)
               ;(println "selected dyear for" (:name person) dyear)
               (assoc person
@@ -287,6 +287,7 @@
   (let [coordinates (get cities (:location person))
         ui-control (create-person-popup coordinates person)]
     {:name (:name person)
+     :location (:location person)
      :control ui-control}))
 
 
@@ -319,23 +320,36 @@
 (defn create-people-controls [people]
   (doall (map render-person people)))
 
+(defn render-people-for-year [people year]
+  (println "render people for year" (count people) year)
+  (let [app-map (:map @state)
+        people-to-popups (create-people-controls people)]
+    (do
+      (add-all-to-map people-to-popups app-map)
+      people-to-popups)))
+
 (defn render-for-year [year]
   (println "render for year" year)
   (let [app-map (:map @state)
-        people (people-by-year expanded-people-data year)
-        people-to-popups (create-people-controls people)]
-      (do
-        (println "people by year" year people)
-        (add-all-to-map people-to-popups app-map)
-        people-to-popups)))
+        people (people-by-year expanded-people-data year)]
+      (render-people-for-year people)))
 
 (defn filter-people-by-names [people names]
   (filter
-    (fn [people]
-      (contains? names (:name people)))
+    (fn [person]
+      (some #(= (:name person) %) names))
     people))
 
 
+(defn name-loc-key [person]
+  (str (:name person) "<<>>" (:location person)))
+
+
+(defn name-from-key [name-loc-key]
+  (first (clojure.string/split name-loc-key "<<>>")))
+
+(defn names-from-keys [keys]
+  (map name-from-key keys))
 
 (defn render-people [new-year]
   (println "render people on the map for" new-year)
@@ -343,26 +357,27 @@
     ; do something when prev year exists
     (do
       (println "previous data found. more comple logic is coming")
-      (let [app-map (:map @state)
-            people (people-by-year expanded-people-data new-year)
+      (let [people (people-by-year expanded-people-data new-year)
             prev-people (:prev-people @state)
-            prev-names (set (map :name prev-people))
-            new-names (set (map :name people))
-            names-to-delete (cs/difference prev-names new-names)
-            names-to-create (cs/difference new-names prev-names)
-            names-to-remain (cs/intersection new-names prev-names)
+            prev-name-loc-keys (set (map name-loc-key prev-people))
+            new-name-loc-keys (set (map name-loc-key people))
+            keys-to-delete (cs/difference prev-name-loc-keys new-name-loc-keys)
+            keys-to-create (cs/difference new-name-loc-keys prev-name-loc-keys)
+            keys-to-remain (cs/intersection new-name-loc-keys prev-name-loc-keys)
+            names-to-delete (names-from-keys keys-to-delete)
+            names-to-create (names-from-keys keys-to-create)
+            names-to-remain (names-from-keys keys-to-remain)
             people-to-popups-to-remove (filter-people-by-names prev-people names-to-delete)
             people-to-create (filter-people-by-names people names-to-create)
-            created-people-to-popups (create-people-controls people-to-create)
+            created-people-to-popups (render-people-for-year people-to-create new-year)
             remained-people-to-popups (filter-people-by-names prev-people names-to-remain)
             new-curr-people (concat remained-people-to-popups created-people-to-popups)]
-        (println "people for the prev year" prev-names prev-year)
-        (println "people for the new year" new-names new-year)
+        (println "people for the prev year" prev-name-loc-keys prev-year)
+        (println "people for the new year" new-name-loc-keys new-year)
         (println "names to delete" names-to-delete (count people-to-popups-to-remove))
         (println "names to remain" names-to-remain (count remained-people-to-popups))
         (println "names to create" names-to-create  (count created-people-to-popups))
         (println "new current people size" (count new-curr-people))
-        (add-all-to-map created-people-to-popups app-map)
         (remove-all-from-map people-to-popups-to-remove)
         (swap! state assoc
                 :curr-year new-year
@@ -510,7 +525,7 @@
 
 (println "exec")
 
-(println "all cities>>" (clojure.string/join "\n" (find-all-cities people-data)))
+;(println "all cities>>" (clojure.string/join "\n" (find-all-cities people-data)))
 
 ;(println "byears>>>" (sort-set (map :byear expanded-people-data)))
 ;(println "dyears>>>" (sort-set (map :dyear expanded-people-data)))
