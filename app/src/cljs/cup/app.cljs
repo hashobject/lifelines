@@ -316,7 +316,7 @@
 (defonce state
   (atom {
       :map nil
-      :curr-year 1890
+      :curr-year 1914
       :prev-year nil
       :curr-people nil
       :prev-people nil
