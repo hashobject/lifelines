@@ -342,6 +342,7 @@
         min-year (first touch-years)
         max-year (last touch-years)
         all-years (sort-set (range min-year (inc max-year)))
+        rendered-years (map first (partition-all 5 all-years))
         years-count (- max-year min-year)
         year-width (/ $range-width years-count)
         labels-html
@@ -351,7 +352,7 @@
                     offset (* index year-width)]
               (str "<li style='left:"  offset "px'>" year "</li>"))
               )
-            touch-years)
+            rendered-years)
         html-str (clojure.string/join "" labels-html)]
     (dommy/set-attr! $range :min min-year)
     (dommy/set-attr! $range :max max-year)
