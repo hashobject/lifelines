@@ -310,7 +310,7 @@
         (apply dom/ul nil
           (map
             (fn [person]
-              (dom/li nil
+              (dom/li #js {:className "person" :style #js {:borderColor (:color person)}}
                 (dom/img #js{:className "avatar" :src (:avatar person)})
                 (dom/span nil (:name person))
                 )
@@ -415,4 +415,4 @@
     ))
   (om/root people-widget
           state
-          {:target (. js/document (getElementById "people"))}))
+          {:target (sel1 :.people-bar)}))

@@ -12,6 +12,28 @@
       [:div.mapboxgl-popup-tip {
         :display "none"
         }]
+      [:.overlay {
+        :z-index 1
+      }]
+      [:.bottom-bar {
+        :z-index 2
+        }]
+      [:.people-bar {
+        :display "block"
+        :z-index 2
+        ; :position "relative"
+        }
+        [:ul {
+          :list-style "none"
+          }
+          [:li {
+            :display "block"
+            }]
+          ]
+        ]
+      [:div.mapboxgl-popup {
+        :z-index 1
+      }]
       [:div.mapboxgl-popup-content {
         :padding 0
         :background "inherit"
@@ -23,6 +45,7 @@
         :height "16px"
         :border-radius "8px"
         :padding 0
+        :position "relative"
         }]
       [:img.avatar {
         :width "30px"
@@ -53,13 +76,4 @@
           }
         ]
       ]
-      [:div#people {
-        :display "block"
-        :z-index 1
-        :position "relative"
-        }
-        [:ul {
-          :list-style "none"
-          }]
-        ]
     ]))

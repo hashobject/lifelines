@@ -43,3 +43,72 @@ body {
   background-color: white;
   box-shadow: 0 -1px 10px 0 rgba(0, 0, 0, 0.3);
 }
+
+.people-bar {
+  position: relative;
+  margin-left: 16px;
+}
+
+.people-bar .person {
+  margin: 8px 0;
+  background-color: white;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 22px;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+.people-bar .person:hover {
+  width: auto;
+}
+
+.people-bar .person img {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.people-bar .person .data {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 16px;
+}
+
+.people-bar .person .name {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.54);
+  text-transform: uppercase;
+}
+
+.people-bar .person.joyce {
+  border-color: #FFC107;
+}
+
+.people-bar .person.picasso {
+  border-color: #FFEB3B;
+}
+
+.people-bar .person.freud {
+  border-color: #4CAF50;
+}
+
+.people-bar .person.dali {
+  border-color: #00BCD4;
+}
+
+.people-bar .person.einstein {
+  border-color: #FF4081;
+}
+
+.people-bar .person.hemingway {
+  border-color: #8BC34A;
+}
+
+.people-bar .person.ghandi {
+  border-color: #FF9800;
+}
