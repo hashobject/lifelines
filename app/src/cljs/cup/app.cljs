@@ -61,7 +61,11 @@
    :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Salvador_Dal%C3%AD_1939.jpg/440px-Salvador_Dal%C3%AD_1939.jpg"
    :color "#00BCD4"
    :locations {
-    "1925-1929" "Paris"
+    "1904-1922" "Figueres"
+    "1922-1926" "Madrid"
+    "1926-1934" "Paris"
+    "1934-1934" "New York"
+    "1934-1989" "Figueres"
    }}
   {:name "Sigmund Freud"
    :link "https://en.wikipedia.org/wiki/Sigmund_Freud"
