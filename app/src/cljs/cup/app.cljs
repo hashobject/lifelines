@@ -50,14 +50,14 @@
 (def people-data '(
   {:name "Mahatma Gandhi"
    :link "https://en.wikipedia.org/wiki/Mahatma_Gandhi"
-   :avatar "/img/gandhi.png"
+   :avatar "img/gandhi.png"
    :color "#FF9800"
    :locations {
     "1888-1891" "London"
     }}
   {:name "Gertrude Stein"
    :link "https://en.wikipedia.org/wiki/Gertrude_Stein"
-   :avatar "/img/stein.png"
+   :avatar "img/stein.png"
    :color "#00BCD4"
    :locations {
     "1874-1877" "Allegheny, Pennsylvania"
@@ -73,7 +73,7 @@
     }}
   {:name "Ernest Hemingway"
    :link "https://en.wikipedia.org/wiki/Ernest_Hemingway"
-   :avatar "/img/hemingway.png"
+   :avatar "img/hemingway.png"
    :color "#8BC34A"
    :locations {
     "1899-1917" "Oak Park, Illinois"
@@ -108,7 +108,7 @@
     }}
   {:name "Albert Einstein"
    :link "https://en.wikipedia.org/wiki/Albert_Einstein"
-   :avatar "/img/einstein.png"
+   :avatar "img/einstein.png"
    :color "#FF4081"
    :locations {
     "1879-1880" "Ulm"
@@ -122,29 +122,29 @@
     "1912-1914" "Zurich"
     "1914-1933" "Berlin"
     "1933-1955" "Princeton"
-    }}
-  {:name "James Joyce"
-   :link "https://en.wikipedia.org/wiki/James_Joyce"
-   :avatar "/img/joyce.png"
-   :color "#FFC107"
-   :locations {
-    "1882-1904" "Dublin"
-    "1904-1904" "Zurich"
-    "1904-1905" "Pula"
-    "1905-1906" "Trieste"
-    "1906-1907" "Rome"
-    "1907-1909" "Trieste"
-    "1909-1910" "Dublin"
-    "1910-1915" "Trieste"
-    "1915-1920" "Zurich"
-    "1920-1931" "Paris"
-    "1931-1931" "London"
-    "1931-1940" "Paris"
-    "1940-1941" "Zurich"
-    }}
+   }}
+ {:name "James Joyce"
+  :link "https://en.wikipedia.org/wiki/James_Joyce"
+  :avatar "img/joyce.png"
+  :color "#FFC107"
+  :locations {
+   "1882-1904" "Dublin"
+   "1904-1904" "Zurich"
+   "1904-1905" "Pula"
+   "1905-1906" "Trieste"
+   "1906-1907" "Rome"
+   "1907-1909" "Trieste"
+   "1909-1910" "Dublin"
+   "1910-1915" "Trieste"
+   "1915-1920" "Zurich"
+   "1920-1931" "Paris"
+   "1931-1931" "London"
+   "1931-1940" "Paris"
+   "1940-1941" "Zurich"
+  }}
   {:name "Salvador Dalí"
    :link "https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD"
-   :avatar "/img/dali.png"
+   :avatar "img/dali.png"
    :color "#00BCD4"
    :locations {
     "1904-1922" "Figueres"
@@ -170,7 +170,7 @@
     }}
   {:name "Sigmund Freud"
    :link "https://en.wikipedia.org/wiki/Sigmund_Freud"
-   :avatar "/img/freud.png"
+   :avatar "img/freud.png"
    :color "#4CAF50"
    :locations {
     "1855-1859" "Příbor"
@@ -180,7 +180,7 @@
     }}
   {:name "Pablo Picasso"
    :link "https://en.wikipedia.org/wiki/Pablo_Picasso"
-   :avatar "/img/picasso.png"
+   :avatar "img/picasso.png"
    :color "#FFEB3B"
    :locations {
     "1881-1891" "Málaga"
@@ -226,8 +226,8 @@
    (true? all)      all-idxs
    :else            (first all-idxs))))
 
-   (defn find-all-cities [people]
-     (sort-set (flatten (map #(vals (:locations %)) people))))
+(defn find-all-cities [people]
+  (sort-set (flatten (map #(vals (:locations %)) people))))
 
 (defn expand-locations [locations]
   (flatten-one-level
@@ -279,8 +279,39 @@
       people-data)))
 
 
+(def marker-offsets
+  [
+    "left: -1px;"
+    "left: -1px; top: -1px;"
+    "top: -1px;"
+    "top: -1px; right: -1px;"
+    "right: -1px;"
+    "right: -1px; bottom: -1px;"
+    "bottom: -1px;"
+    "bottom: -1px; left: -1px;"
+    ;
+    "left: -2px;"
+    "left: -2px; top: -2px;"
+    "top: -2px;"
+    "top: -2px; right: -2px;"
+    "right: -2px;"
+    "right: -2px; bottom: -2px;"
+    "bottom: -2px;"
+    "bottom: -2px; left: -2px;"
+    ;
+    "left: -3px;"
+    "left: -3px; top: -3px;"
+    "top: -3px;"
+    "top: -3px; right: -3px;"
+    "right: -3px;"
+    "right: -3px; bottom: -3px;"
+    "bottom: -3px;"
+    "bottom: -3px; left: -3px;"
+  ])
+
 (defn create-person-popup [coordinates person]
   (let [lng-lat (reverse coordinates)
+        offset (rand-nth marker-offsets)
         name (:name person)
         color (:color person)
         avatar (:avatar person)
@@ -298,10 +329,14 @@
           "</div>"
           "<div class='person-marker' "
           " data-name='" name "' "
-          "style='background-color:" color "'>"
+          "style='background-color:" color ";"
+          offset
+          "'>"
           "</div>")]
         (do
-          (.setLngLat person-popup (clj->js lng-lat))
+          (if (nil? (first lng-lat))
+            (println "not found geo data")
+            (.setLngLat person-popup (clj->js lng-lat)))
           (.setHTML person-popup html)
           person-popup
           )))
@@ -355,7 +390,7 @@
   (println "render for year" year)
   (let [app-map (:map @state)
         people (people-by-year expanded-people-data year)]
-      (render-people-for-year people)))
+      (render-people-for-year people year)))
 
 (defn filter-people-by-names [people names]
   (filter
@@ -419,7 +454,7 @@
         curr-year (:curr-year @state)
         curr-people (:curr-people @state)]
     (println "year-changed from" curr-year "to" new-year state)
-    (println "changed prev year and prev people" curr-people)
+    (println "changed prev year and prev people" (count curr-people))
     (println "transaction. before" (:curr-year @state) (:prev-year @state) (map :name (:prev-people @state)))
     (swap! state assoc
             :curr-year new-year
