@@ -35,14 +35,6 @@
         :padding 0
         :background "inherit"
         :box-shadow "none"
-        }]
-      [:div.person-marker {
-        :display "block"
-        :width "16px"
-        :height "16px"
-        :border-radius "8px"
-        :padding 0
-        :position "relative"
         }
         [:div.person {
           :position "absolute"
@@ -56,6 +48,15 @@
               :display "block"
             }]
         ]
+      ]
+      [:div.person-marker {
+        :display "block"
+        :width "16px"
+        :height "16px"
+        :border-radius "8px"
+        :padding 0
+        :position "relative"
+        }
       ]
       [:img.avatar {
         :width "30px"

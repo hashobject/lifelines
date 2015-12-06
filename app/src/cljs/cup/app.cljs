@@ -177,17 +177,18 @@
         person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
         ;(str "<img width='40px' src='" avatar "'>")
         html (str
-          "<div class='person-marker' "
-          " data-name='" name "' "
-          "style='background-color:" color "'>"
           "<div class='person open' style='border-color:"
           color
           "'>"
           "<img class='avatar' src='" avatar "'>"
           "<div class='data'>"
           "<span class='name'>" name "</span>"
+          "<span class='location'>" (:location person) "</span>"
           "</div>"
           "</div>"
+          "<div class='person-marker' "
+          " data-name='" name "' "
+          "style='background-color:" color "'>"
           "</div>")]
         (do
           (.setLngLat person-popup (clj->js coordinates))
