@@ -288,17 +288,15 @@
             people
               (map
                 (fn [name]
-                  (find-first
-                    (fn [person]
-                      (= name (:name person))
-                    )
-                    expanded-people-data)
-                  )
+                  (find-first #(= name (:name %)) expanded-people-data))
                 curr-people-names)]
         (apply dom/ul nil
           (map
             (fn [person]
-              (dom/li nil (:name person))
+              (dom/li nil
+                (dom/img #js{:className "avatar" :src (:avatar person)})
+                (dom/span nil (:name person))
+                )
               )
             people)
           )))))

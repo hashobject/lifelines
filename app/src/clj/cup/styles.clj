@@ -24,9 +24,16 @@
         :border-radius "8px"
         :padding 0
         }]
+      [:img.avatar {
+        :width "30px"
+        :border-radius "15px"
+      }]
       [:div#people {
         :display "block"
         :z-index 1
         :position "relative"
+        }]
+      [:div#people :ul {
+        :list-style "none"
         }]
     ]))
