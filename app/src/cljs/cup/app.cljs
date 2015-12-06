@@ -14,7 +14,9 @@
 
   "Paris" [2.352222 48.856614]
   "Princeton" [-74.667223 40.357298]
+
   "Rome" [12.496366 41.902784]
+  
   "Trieste" [13.776818 45.649526]
 
   "Vienna" [16.373819 48.208174]
@@ -33,8 +35,30 @@
    :avatar "/img/hemingway.png"
    :color "#8BC34A"
    :locations {
-    "1921-1928" "Paris"
-    "1944-1945" "London"}}
+    "1899-1917" "Oak Park, Illinois"
+    "1917-1918" "Kansas City, Missouri"
+    "1918-1918" "Fossalta di Piave"
+    "1918-1919" "Milan"
+    "1919-1920" "Oak Park, Illinois"
+    "1920-1921" "Chicago"
+    "1921-1923" "Paris"
+    "1923-1923" "Pamplona"
+    "1923-1924" "Toronto"
+    "1924-1924" "Pamplona"
+    "1924-1925" "Paris"
+    "1925-1925" "Pamplona"
+    "1925-1926" "Schruns"
+    "1926-1928" "Paris"
+    "1928-1929" "Key West"
+    "1929-1930" "Paris"
+    "1930-1937" "Key West"
+    "1937-1939" "Madrid"
+    "1939-1940" "Havana"
+    "1940-1941" "Ketchum, Idaho"
+    "1941-1945" "London"
+    "1945-1945" "Havana"
+    "1956-1961" "Ketchum, Idaho"
+    }}
   {:name "Albert Einstein"
    :link "https://en.wikipedia.org/wiki/Albert_Einstein"
    :avatar "/img/einstein.png"
@@ -76,6 +100,7 @@
     "1934-1934" "New York"
     "1934-1936" "Port Lligat"
     "1936-1936" "London"
+    "1936-1938" "New York"
     ;"1936-1936" "New York"
     ;"1936-1938" "Port Lligat"
     "1938-1938" "London"
