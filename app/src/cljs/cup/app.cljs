@@ -21,20 +21,20 @@
 (def people-data '(
   {:name "Mahatma Gandhi"
    :link "https://en.wikipedia.org/wiki/Mahatma_Gandhi"
-   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Portrait_Gandhi.jpg/400px-Portrait_Gandhi.jpg"
+   :avatar "/img/gandhi.png"
    :color "#FF9800"
    :locations {
     "1888-1891" "London"}}
   {:name "Ernest Hemingway"
    :link "https://en.wikipedia.org/wiki/Ernest_Hemingway"
-   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ernest_Hemingway_1923_passport_photo.jpg/440px-Ernest_Hemingway_1923_passport_photo.jpg"
+   :avatar "/img/hemingway.png"
    :color "#8BC34A"
    :locations {
     "1921-1928" "Paris"
     "1944-1945" "London"}}
   {:name "Albert Einstein"
    :link "https://en.wikipedia.org/wiki/Albert_Einstein"
-   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Einstein_patentoffice.jpg/340px-Einstein_patentoffice.jpg"
+   :avatar "/img/einstein.png"
    :color "#FF4081"
    :locations {
     "1896-1900" "Zurich"
@@ -45,7 +45,7 @@
    }}
  {:name "James Joyce"
   :link "https://en.wikipedia.org/wiki/James_Joyce"
-  :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Revolutionary_Joyce_Better_Contrast.jpg/440px-Revolutionary_Joyce_Better_Contrast.jpg"
+  :avatar "/img/joyce.png"
   :color "#FFC107"
   :locations {
    "1905-1906" "Trieste"
@@ -58,14 +58,14 @@
   }}
   {:name "Salvador Dalí"
    :link "https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD"
-   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Salvador_Dal%C3%AD_1939.jpg/440px-Salvador_Dal%C3%AD_1939.jpg"
+   :avatar "/img/dali.png"
    :color "#00BCD4"
    :locations {
     "1925-1929" "Paris"
    }}
   {:name "Sigmund Freud"
    :link "https://en.wikipedia.org/wiki/Sigmund_Freud"
-   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Sigmund_Freud_LIFE.jpg/400px-Sigmund_Freud_LIFE.jpg"
+   :avatar "/img/freud.png"
    :color "#4CAF50"
    :locations {
      "1881-1938" "Vienna"
@@ -73,7 +73,7 @@
      }}
   {:name "Pablo Picasso"
    :link "https://en.wikipedia.org/wiki/Pablo_Picasso"
-   :avatar "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Sigmund_Freud_LIFE.jpg/400px-Sigmund_Freud_LIFE.jpg"
+   :avatar "/img/picasso.png"
    :color "#FFEB3B"
    :locations {
      "1881-1891" "Málaga"
