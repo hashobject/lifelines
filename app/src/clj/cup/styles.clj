@@ -44,6 +44,15 @@
           }
         ]
       ]
+      [:ol#lifelines {
+        :list-style "none"
+        }
+        [:li {
+          :display "block"
+          :position "relative"
+          }
+        ]
+      ]
       [:div#people {
         :display "block"
         :z-index 1

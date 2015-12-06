@@ -293,16 +293,20 @@
     (aset js/window "appMap" app-map)))
 
 
+(defn resolve-people [data]
+  (let [curr-people-names (map :name (:curr-people data))
+        people
+          (map
+            (fn [name]
+              (find-first #(= name (:name %)) expanded-people-data))
+            curr-people-names)]
+        people))
+
 (defn people-widget [data owner]
   (reify
     om/IRender
     (render [this]
-      (let [curr-people-names (map :name (:curr-people data))
-            people
-              (map
-                (fn [name]
-                  (find-first #(= name (:name %)) expanded-people-data))
-                curr-people-names)]
+      (let [people (resolve-people data)]
         (apply dom/ul nil
           (map
             (fn [person]
@@ -334,8 +338,41 @@
       (find-all-byears people)
       (find-all-dyears people))))
 
+(defn render-person-lifeline [person all-years year-width]
+  (let [index (position (:byear person) all-years)
+        offset (* index year-width)
+        life-duration (- (:dyear person) (:byear person))
+        width (* life-duration year-width)
+        html (str "<li style='left:"
+                  offset "px;"
+                  "background-color:" (:color person)
+                  ";height: 3px;"
+                  "width:" width "px;"
+                  "'></li>")]
+        html))
+
+(defn render-people-lifelines [people all-years year-width]
+  (let [items-html
+          (map
+            #(render-person-lifeline % all-years year-width)
+            people)
+        html-str (clojure.string/join "" items-html)]
+        html-str))
+
+(defn render-years [rendered-years all-years year-width]
+  (let [labels-html
+          (map
+            (fn [year]
+              (let [index (position year all-years)
+                    offset (* index year-width)]
+              (str "<li style='left:"  offset "px'>" year "</li>")))
+            rendered-years)
+        html-str (clojure.string/join "" labels-html)]
+        html-str))
+
 (defn render-timeline []
   (let [$range-labels (sel1 :#years-labels)
+        $lifelines (sel1 :#lifelines)
         $range (sel1 :#years)
         $range-width (-> $range dommy/bounding-client-rect :width)
         touch-years (find-all-touch-years expanded-people-data)
@@ -352,20 +389,16 @@
         rendered-years (map first (partition-all partition-size all-years))
         years-count (- max-year min-year)
         year-width (/ $range-width years-count)
-        labels-html
-          (map
-            (fn [year]
-              (let [index (position year all-years)
-                    offset (* index year-width)]
-              (str "<li style='left:"  offset "px'>" year "</li>"))
-              )
-            rendered-years)
-        html-str (clojure.string/join "" labels-html)]
+        labels-html (render-years rendered-years all-years year-width)
+        ; NOTE: render lifelines for all people
+        ;current-people (resolve-people @state)
+        lifelines-html (render-people-lifelines expanded-people-data all-years year-width)]
     (dommy/set-attr! $range :min min-year)
     (dommy/set-attr! $range :max max-year)
-    (dommy/set-html! $range-labels html-str)
+    (dommy/set-html! $range-labels labels-html)
+    (dommy/set-html! $lifelines lifelines-html)
     (println "width>>>>" $range-width years min-year year-width)
-    (println "xxxx>>>>" html-str)
+    (println "xxxx>>>>" labels-html)
   ))
 ;(dommy/unlisten! (sel1 :#years) :change year-change-handler)
 
