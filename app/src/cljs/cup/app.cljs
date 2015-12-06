@@ -81,13 +81,19 @@
   :avatar "/img/joyce.png"
   :color "#FFC107"
   :locations {
+   "1882-1904" "Dublin"
+   "1904-1904" "Zurich"
+   "1904-1905" "Pula"
    "1905-1906" "Trieste"
    "1906-1907" "Rome"
    "1907-1909" "Trieste"
+   "1909-1910" "Dublin"
+   "1910-1915" "Trieste"
    "1915-1920" "Zurich"
-   "1920-1940" "Paris"
+   "1920-1931" "Paris"
    "1931-1931" "London"
-   "1941-1941" "Zurich"
+   "1931-1940" "Paris"
+   "1940-1941" "Zurich"
   }}
   {:name "Salvador Dalí"
    :link "https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD"
@@ -120,7 +126,9 @@
    :avatar "/img/freud.png"
    :color "#4CAF50"
    :locations {
-     "1881-1938" "Vienna"
+     "1855-1859" "Příbor"
+     "1859-1860" "Leipzig"
+     "1860-1938" "Vienna"
      "1938-1939" "London"
      }}
   {:name "Pablo Picasso"
