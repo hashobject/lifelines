@@ -54,9 +54,15 @@ ul, ol {
 .people-bar {
   position: relative;
   margin-left: 16px;
-  max-width: 210px;
+  max-width: 218px;
   z-index: 2;
 }
+
+.people-bar ul {
+  padding: 0;
+  margin: 0;
+}
+
 .people-bar ul li {
   display: block;
 }
@@ -72,6 +78,7 @@ ul, ol {
   height: 40px;
   overflow: hidden;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.35);
+  cursor: pointer;
 }
 
 .person:hover {
@@ -93,7 +100,7 @@ ul, ol {
 .person .data {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 16px;
+  margin: 0 16px 0 8px;
 }
 
 .person .name {
@@ -128,6 +135,27 @@ ul, ol {
 
 .person.ghandi {
   border-color: #FF9800;
+}
+
+.mapboxgl-popup-content div.person {
+  position: absolute;
+  top: -56px;
+  left: -18px;
+  display: none;
+}
+
+.mapboxgl-popup-content:hover div.person {
+  display: block;
+}
+
+.person-marker {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
 }
 
 .years-labels {

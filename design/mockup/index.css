@@ -130,6 +130,15 @@ ul, ol {
   border-color: #FF9800;
 }
 
+div.person-marker {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  padding: 0;
+  position: relative;
+}
+
 .years-labels {
   list-style: none;
   font-size: 11px;

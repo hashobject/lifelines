@@ -18,8 +18,8 @@
         }
         [:div.person {
           :position "absolute"
-          :top "-55px"
-          :left "-30px"
+          :top "-56px"
+          :left "-18px"
           :display "none"
           }
         ]
@@ -28,14 +28,5 @@
               :display "block"
             }]
         ]
-      ]
-      [:div.person-marker {
-        :display "block"
-        :width "16px"
-        :height "16px"
-        :border-radius "8px"
-        :padding 0
-        :position "relative"
-        }
       ]
     ]))
