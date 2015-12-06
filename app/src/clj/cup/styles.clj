@@ -18,6 +18,7 @@
       [:.people-bar {
         :display "block"
         :z-index 2
+        :max-width "200px"
         ; :position "relative"
         }
         [:ul {
@@ -43,7 +44,20 @@
         :border-radius "8px"
         :padding 0
         :position "relative"
-        }]
+        }
+        [:div.person {
+          :position "absolute"
+          :top "-20px"
+          :left "-30px"
+          :display "none"
+          }
+        ]
+        [:&:hover
+          [:div.person {
+              :display "block"
+            }]
+        ]
+      ]
       [:img.avatar {
         :width "30px"
         :border-radius "15px"

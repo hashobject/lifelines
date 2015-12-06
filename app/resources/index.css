@@ -49,7 +49,7 @@ body {
   margin-left: 16px;
 }
 
-.people-bar .person {
+.person {
   margin: 8px 0;
   background-color: white;
   border-width: 2px;
@@ -62,53 +62,25 @@ body {
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.35);
 }
 
-.people-bar .person:hover {
+.person:hover {
   width: auto;
 }
 
-.people-bar .person img {
+.person img {
   width: 40px;
   height: 40px;
   display: inline-block;
   vertical-align: middle;
 }
 
-.people-bar .person .data {
+.person .data {
   display: inline-block;
   vertical-align: middle;
   margin-right: 16px;
 }
 
-.people-bar .person .name {
+.person .name {
   font-size: 11px;
   color: rgba(0, 0, 0, 0.54);
   text-transform: uppercase;
-}
-
-.people-bar .person.joyce {
-  border-color: #FFC107;
-}
-
-.people-bar .person.picasso {
-  border-color: #FFEB3B;
-}
-
-.people-bar .person.freud {
-  border-color: #4CAF50;
-}
-
-.people-bar .person.dali {
-  border-color: #00BCD4;
-}
-
-.people-bar .person.einstein {
-  border-color: #FF4081;
-}
-
-.people-bar .person.hemingway {
-  border-color: #8BC34A;
-}
-
-.people-bar .person.ghandi {
-  border-color: #FF9800;
 }

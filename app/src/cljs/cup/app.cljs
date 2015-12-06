@@ -162,13 +162,25 @@
       people-data)))
 
 
-(defn create-person-popup [coordinates name color]
-  (let [person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
+(defn create-person-popup [coordinates person]
+  (let [name (:name person)
+        color (:color person)
+        avatar (:avatar person)
+        person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
         ;(str "<img width='40px' src='" avatar "'>")
         html (str
           "<div class='person-marker' "
           " data-name='" name "' "
-          "style='background-color:" color "'></div>")]
+          "style='background-color:" color "'>"
+          "<div class='person' style='border-color='"
+          color
+          "'>"
+          "<img class='avatar' src='" avatar "'>"
+          "<div class='data'>"
+          "<span class='name'>" name "</span>"
+          "</div>"
+          "</div>"
+          "</div>")]
         (do
           (.setLngLat person-popup (clj->js coordinates))
           (.setHTML person-popup html)
@@ -177,7 +189,7 @@
 
 (defn render-person [person]
   (let [coordinates (get cities (:location person))
-        ui-control (create-person-popup coordinates (:name person) (:color person))]
+        ui-control (create-person-popup coordinates person)]
     {:name (:name person)
      :control ui-control}))
 
@@ -412,13 +424,13 @@
   (enable-console-print!)
   (println "init")
   (dommy/listen! (sel1 :#years) :change year-change-handler)
-  (dommy/listen! [(sel1 :body) :.person-marker]
-    :click (fn [e]
-      (let [$person-marker (.-selectedTarget e)
-            name (dommy/attr $person-marker "data-name")]
-        (println "clicked>>>>" person-marker name)
-      )
-    ))
+  ; (dommy/listen! [(sel1 :body) :.person-marker]
+  ;   :click (fn [e]
+  ;     (let [$person-marker (.-selectedTarget e)
+  ;           name (dommy/attr $person-marker "data-name")]
+  ;       (println "clicked>>>>" person-marker name)
+  ;     )
+  ;   ))
   (om/root people-widget
           state
           {:target (sel1 :.people-bar)}))
