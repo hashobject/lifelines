@@ -209,8 +209,8 @@
    (true? all)      all-idxs
    :else            (first all-idxs))))
 
-   (defn find-all-cities [people]
-     (sort-set (flatten (map #(vals (:locations %)) people))))
+(defn find-all-cities [people]
+  (sort-set (flatten (map #(vals (:locations %)) people))))
 
 (defn expand-locations [locations]
   (flatten-one-level
@@ -262,8 +262,39 @@
       people-data)))
 
 
+(def marker-offsets
+  [
+    "left: -1px;"
+    "left: -1px; top: -1px;"
+    "top: -1px;"
+    "top: -1px; right: -1px;"
+    "right: -1px;"
+    "right: -1px; bottom: -1px;"
+    "bottom: -1px;"
+    "bottom: -1px; left: -1px;"
+    ;
+    "left: -2px;"
+    "left: -2px; top: -2px;"
+    "top: -2px;"
+    "top: -2px; right: -2px;"
+    "right: -2px;"
+    "right: -2px; bottom: -2px;"
+    "bottom: -2px;"
+    "bottom: -2px; left: -2px;"
+    ;
+    "left: -3px;"
+    "left: -3px; top: -3px;"
+    "top: -3px;"
+    "top: -3px; right: -3px;"
+    "right: -3px;"
+    "right: -3px; bottom: -3px;"
+    "bottom: -3px;"
+    "bottom: -3px; left: -3px;"
+  ])
+
 (defn create-person-popup [coordinates person]
   (let [lng-lat (reverse coordinates)
+        offset (rand-nth marker-offsets)
         name (:name person)
         color (:color person)
         avatar (:avatar person)
@@ -281,7 +312,9 @@
           "</div>"
           "<div class='person-marker' "
           " data-name='" name "' "
-          "style='background-color:" color "'>"
+          "style='background-color:" color ";"
+          offset
+          "'>"
           "</div>")]
         (do
           (.setLngLat person-popup (clj->js lng-lat))
@@ -402,7 +435,7 @@
         curr-year (:curr-year @state)
         curr-people (:curr-people @state)]
     (println "year-changed from" curr-year "to" new-year state)
-    (println "changed prev year and prev people" curr-people)
+    (println "changed prev year and prev people" (count curr-people))
     (println "transaction. before" (:curr-year @state) (:prev-year @state) (map :name (:prev-people @state)))
     (swap! state assoc
             :curr-year new-year
