@@ -317,7 +317,9 @@
           "'>"
           "</div>")]
         (do
-          (.setLngLat person-popup (clj->js lng-lat))
+          (if (nil? (first lng-lat))
+            (println "not found geo data")
+            (.setLngLat person-popup (clj->js lng-lat)))
           (.setHTML person-popup html)
           person-popup
           )))
