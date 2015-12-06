@@ -17,7 +17,29 @@
         :background "inherit"
         :box-shadow "none"
         }]
-      [:div.mapboxgl-popup-content :img {
-        :border-radius "20px"
+      [:div.person-marker {
+        :display "block"
+        :width "16px"
+        :height "16px"
+        :border-radius "8px"
+        :padding 0
+        }]
+      [:img.avatar {
+        :width "30px"
+        :border-radius "15px"
+      }]
+      [:div#years-control {
+        :width "100%"
+      }]
+      [:input#years {
+        :width "100%"
+      }]
+      [:div#people {
+        :display "block"
+        :z-index 1
+        :position "relative"
+        }]
+      [:div#people :ul {
+        :list-style "none"
         }]
     ]))

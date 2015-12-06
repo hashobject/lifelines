@@ -105,6 +105,9 @@
 (defn flatten-one-level [coll]
   (mapcat  #(if (sequential? %) % [%]) coll))
 
+(defn find-first [f coll]
+  (first (filter f coll)))
+
 (defn expand-locations [locations]
   (flatten-one-level
     (map expand-location locations)))
@@ -146,9 +149,10 @@
       people-data)))
 
 
-(defn create-person-popup [coordinates avatar]
+(defn create-person-popup [coordinates color]
   (let [person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
-        html (str "<img width='40px' src='" avatar "'>")]
+        ;(str "<img width='40px' src='" avatar "'>")
+        html (str "<div class='person-marker' style='background-color:" color "'></div>")]
         (do
           (.setLngLat person-popup (clj->js coordinates))
           (.setHTML person-popup html)
@@ -157,15 +161,10 @@
 
 (defn render-person [person]
   (let [coordinates (get cities (:location person))
-        ui-control (create-person-popup coordinates (:avatar person))]
+        ui-control (create-person-popup coordinates (:color person))]
     {:name (:name person)
      :control ui-control}))
 
-(defn widget [data owner]
-  (reify
-    om/IRender
-    (render [this]
-      (dom/h1 nil (:text data)))))
 
 (defn add-all-to-map [items app-map]
   (doall
@@ -281,17 +280,74 @@
     (aset js/window "appMap" app-map)))
 
 
+(defn people-widget [data owner]
+  (reify
+    om/IRender
+    (render [this]
+      (let [curr-people-names (map :name (:curr-people data))
+            people
+              (map
+                (fn [name]
+                  (find-first #(= name (:name %)) expanded-people-data))
+                curr-people-names)]
+        (apply dom/ul nil
+          (map
+            (fn [person]
+              (dom/li nil
+                (dom/img #js{:className "avatar" :src (:avatar person)})
+                (dom/span nil (:name person))
+                )
+              )
+            people)
+          )))))
+
 (create-map)
 (render-people (:curr-year @state))
 
+(defn sort-set [c]
+  (sort (set c)))
+
+(defn find-all-byears [people]
+  (sort-set
+    (map
+      (fn [person]
+        (-> person :locations first first))
+      people)))
+
+(defn find-all-dyears [people]
+  (sort-set
+    (map
+      (fn [person]
+        (-> person :locations last first))
+      people)))
+
+(defn find-all-touch-years [people]
+  (sort
+    (cs/union
+      (find-all-byears people)
+      (find-all-dyears people))))
+
+(defn render-timeline []
+  (let [$range (sel1 :#years)
+        $range-width (-> $range dommy/bounding-client-rect :width)
+        years (find-all-touch-years expanded-people-data)
+        min-year (first years)
+        max-year (last years)]
+    (dommy/set-attr! $range :min min-year)
+    (dommy/set-attr! $range :max max-year)    
+    (println "width>>>>" $range-width years min-year)
+  ))
 ;(dommy/unlisten! (sel1 :#years) :change year-change-handler)
 
+
 (println "exec")
+
+(render-timeline)
 (defn init []
   (enable-console-print!)
   (println "init")
   (dommy/listen! (sel1 :#years) :change year-change-handler)
 
-  (om/root widget
-          {:text ""}
-          {:target (. js/document (getElementById "container"))}))
+  (om/root people-widget
+          state
+          {:target (. js/document (getElementById "people"))}))
