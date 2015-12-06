@@ -53,7 +53,7 @@
         (build)))
 
 (deftask production []
-  (task-options! cljs {:optimizations :advanced}
+  (task-options! cljs {:optimizations :simple}
                       garden {:pretty-print false})
   identity)
 
