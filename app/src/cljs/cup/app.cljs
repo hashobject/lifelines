@@ -281,14 +281,14 @@
 
 (def marker-offsets
   [
-    "left: -1px;"
-    "left: -1px; top: -1px;"
-    "top: -1px;"
-    "top: -1px; right: -1px;"
-    "right: -1px;"
-    "right: -1px; bottom: -1px;"
-    "bottom: -1px;"
-    "bottom: -1px; left: -1px;"
+    "left: -4px;"
+    "left: -4px; top: -4px;"
+    "top: -4px;"
+    "top: -4px; right: -4px;"
+    "right: -4px;"
+    "right: -4px; bottom: -4px;"
+    "bottom: -4px;"
+    "bottom: -4px; left: -4px;"
     ;
     "left: -2px;"
     "left: -2px; top: -2px;"
