@@ -30,16 +30,36 @@
       }]
       [:div#years-control {
         :width "100%"
+        :position "relative"
       }]
       [:input#years {
         :width "100%"
       }]
+      [:ol#years-labels {
+        :list-style "none"
+        }
+        [:li {
+          :display "inline-block"
+          :position "absolute"
+          }
+        ]
+      ]
+      [:ol#lifelines {
+        :list-style "none"
+        }
+        [:li {
+          :display "block"
+          :position "relative"
+          }
+        ]
+      ]
       [:div#people {
         :display "block"
         :z-index 1
         :position "relative"
-        }]
-      [:div#people :ul {
-        :list-style "none"
-        }]
+        }
+        [:ul {
+          :list-style "none"
+          }]
+        ]
     ]))

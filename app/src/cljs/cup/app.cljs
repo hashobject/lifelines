@@ -108,6 +108,13 @@
 (defn find-first [f coll]
   (first (filter f coll)))
 
+(defn position [x coll & {:keys [from-end all] :or {from-end false all false}}]
+  (let [all-idxs (keep-indexed (fn [idx val] (when (= val x) idx)) coll)]
+  (cond
+   (true? from-end) (last all-idxs)
+   (true? all)      all-idxs
+   :else            (first all-idxs))))
+
 (defn expand-locations [locations]
   (flatten-one-level
     (map expand-location locations)))
@@ -118,8 +125,14 @@
     (map
       (fn [person]
         (let [locations (:locations person)
-              expanded (expand-locations locations)]
-              (assoc person :locations expanded)))
+              expanded (expand-locations locations)
+              byear (->> expanded first first)
+              dyear (->> expanded last first)]
+              (assoc person
+                :locations expanded
+                :byear byear
+                :dyear dyear
+                )))
       people-data)))
 
 (defn find-location-for-year [year locations]
@@ -280,16 +293,20 @@
     (aset js/window "appMap" app-map)))
 
 
+(defn resolve-people [data]
+  (let [curr-people-names (map :name (:curr-people data))
+        people
+          (map
+            (fn [name]
+              (find-first #(= name (:name %)) expanded-people-data))
+            curr-people-names)]
+        people))
+
 (defn people-widget [data owner]
   (reify
     om/IRender
     (render [this]
-      (let [curr-people-names (map :name (:curr-people data))
-            people
-              (map
-                (fn [name]
-                  (find-first #(= name (:name %)) expanded-people-data))
-                curr-people-names)]
+      (let [people (resolve-people data)]
         (apply dom/ul nil
           (map
             (fn [person]
@@ -309,17 +326,11 @@
 
 (defn find-all-byears [people]
   (sort-set
-    (map
-      (fn [person]
-        (-> person :locations first first))
-      people)))
+    (map :byear people)))
 
 (defn find-all-dyears [people]
   (sort-set
-    (map
-      (fn [person]
-        (-> person :locations last first))
-      people)))
+    (map :dyear people)))
 
 (defn find-all-touch-years [people]
   (sort
@@ -327,15 +338,67 @@
       (find-all-byears people)
       (find-all-dyears people))))
 
+(defn render-person-lifeline [person all-years year-width]
+  (let [index (position (:byear person) all-years)
+        offset (* index year-width)
+        life-duration (- (:dyear person) (:byear person))
+        width (* life-duration year-width)
+        html (str "<li style='left:"
+                  offset "px;"
+                  "background-color:" (:color person)
+                  ";height: 3px;"
+                  "width:" width "px;"
+                  "'></li>")]
+        html))
+
+(defn render-people-lifelines [people all-years year-width]
+  (let [items-html
+          (map
+            #(render-person-lifeline % all-years year-width)
+            people)
+        html-str (clojure.string/join "" items-html)]
+        html-str))
+
+(defn render-years [rendered-years all-years year-width]
+  (let [labels-html
+          (map
+            (fn [year]
+              (let [index (position year all-years)
+                    offset (* index year-width)]
+              (str "<li style='left:"  offset "px'>" year "</li>")))
+            rendered-years)
+        html-str (clojure.string/join "" labels-html)]
+        html-str))
+
 (defn render-timeline []
-  (let [$range (sel1 :#years)
+  (let [$range-labels (sel1 :#years-labels)
+        $lifelines (sel1 :#lifelines)
+        $range (sel1 :#years)
         $range-width (-> $range dommy/bounding-client-rect :width)
-        years (find-all-touch-years expanded-people-data)
-        min-year (first years)
-        max-year (last years)]
+        touch-years (find-all-touch-years expanded-people-data)
+        min-year (first touch-years)
+        max-year (last touch-years)
+        all-years (sort-set (range min-year (inc max-year)))
+        partition-size
+          (cond
+            (< $range-width 401) 20
+            (< $range-width 600) 10
+            (< $range-width 1000) 6
+            :else 5
+            )
+        rendered-years (map first (partition-all partition-size all-years))
+        years-count (- max-year min-year)
+        year-width (/ $range-width years-count)
+        labels-html (render-years rendered-years all-years year-width)
+        ; NOTE: render lifelines for all people
+        ;current-people (resolve-people @state)
+        lifelines-html (render-people-lifelines expanded-people-data all-years year-width)]
     (dommy/set-attr! $range :min min-year)
-    (dommy/set-attr! $range :max max-year)    
-    (println "width>>>>" $range-width years min-year)
+    (dommy/set-attr! $range :max max-year)
+    (dommy/set-html! $range-labels labels-html)
+    (dommy/set-html! $lifelines lifelines-html)
+    (println "width>>>>" $range-width years min-year year-width)
+    (println "xxxx>>>>" labels-html)
   ))
 ;(dommy/unlisten! (sel1 :#years) :change year-change-handler)
 
@@ -347,7 +410,9 @@
   (enable-console-print!)
   (println "init")
   (dommy/listen! (sel1 :#years) :change year-change-handler)
-
+  (dommy/listen! (sel1 :body) :click (fn [el]
+    (println "clicked>>>>" el)
+    ))
   (om/root people-widget
           state
           {:target (. js/document (getElementById "people"))}))
