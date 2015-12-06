@@ -48,13 +48,13 @@
   })
 
 (def people-data '(
-  {:name "Mahatma Gandhi"
-   :link "https://en.wikipedia.org/wiki/Mahatma_Gandhi"
-   :avatar "img/gandhi.png"
-   :color "#FF9800"
-   :locations {
-    "1888-1891" "London"
-    }}
+  ; {:name "Mahatma Gandhi"
+  ;  :link "https://en.wikipedia.org/wiki/Mahatma_Gandhi"
+  ;  :avatar "img/gandhi.png"
+  ;  :color "#FF9800"
+  ;  :locations {
+  ;   "1888-1891" "London"
+  ;   }}
   {:name "Gertrude Stein"
    :link "https://en.wikipedia.org/wiki/Gertrude_Stein"
    :avatar "img/stein.png"
@@ -283,14 +283,14 @@
 
 (def marker-offsets
   [
-    "left: -1px;"
-    "left: -1px; top: -1px;"
-    "top: -1px;"
-    "top: -1px; right: -1px;"
-    "right: -1px;"
-    "right: -1px; bottom: -1px;"
-    "bottom: -1px;"
-    "bottom: -1px; left: -1px;"
+    "left: -4px;"
+    "left: -4px; top: -4px;"
+    "top: -4px;"
+    "top: -4px; right: -4px;"
+    "right: -4px;"
+    "right: -4px; bottom: -4px;"
+    "bottom: -4px;"
+    "bottom: -4px; left: -4px;"
     ;
     "left: -2px;"
     "left: -2px; top: -2px;"
@@ -452,7 +452,8 @@
 
 (defn year-change-handler [e]
   (println "attached listener event")
-  (let [new-year (dommy/value (sel1 :#years))
+  (let [$current-year (sel1 :.current-year)
+        new-year (dommy/value (sel1 :#years))
         curr-year (:curr-year @state)
         curr-people (:curr-people @state)]
     (println "year-changed from" curr-year "to" new-year state)
@@ -464,13 +465,14 @@
             :curr-people []
             :prev-people curr-people)
     (println "transaction. after" (:curr-year @state) (:prev-year @state) (map :name (:prev-people @state)))
+    (dommy/set-html! $current-year new-year)
     (render-people new-year)))
 
 (defn create-map []
   (aset js/mapboxgl "accessToken" "pk.eyJ1IjoiaGFzaG9iamVjdCIsImEiOiJjaWh0ZWU4MjkwMTdsdGxtMWIzZ3hnbnVqIn0.RQjfkzc1hI2UuR0vzjMtJQ")
   (let [props (js-obj "container" "map"
-                      "zoom" 1
-                      "center" (clj->js [12.496366 41.902784])
+                      "zoom" 2
+                      "center" (clj->js [-15.496366 41.902784])
                       "style" "mapbox://styles/mapbox/streets-v8")
         app-map (js/mapboxgl.Map. props)]
     ; save map into state atom
