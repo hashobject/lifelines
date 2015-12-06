@@ -398,12 +398,10 @@
 (render-people (:curr-year @state))
 
 (defn find-all-byears [people]
-  (sort-set
-    (map :byear people)))
+  (sort-set(map :byear people)))
 
 (defn find-all-dyears [people]
-  (sort-set
-    (map :dyear people)))
+  (sort-set (map :dyear people)))
 
 (defn find-all-touch-years [people]
   (sort
@@ -419,7 +417,7 @@
         html (str "<li><div style='left:"
                   offset "px;"
                   "background-color:" (:color person)
-                  ";height: 3px;"
+                  ";height: 2px;margin-bottom: 2px;"
                   "width:" width "px;"
                   "'></div></li>")]
         html))
@@ -476,7 +474,11 @@
 
 (println "exec")
 
-(println "all cities" (find-all-cities people-data))
+(println "all cities>>" (find-all-cities people-data))
+
+(println "years>>>" (sort-set (map :dyear expanded-people-data)))
+(println "years2>>>" (sort-set (map :byear expanded-people-data)))
+
 (render-timeline)
 (defn init []
   (enable-console-print!)
