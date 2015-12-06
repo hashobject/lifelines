@@ -66,10 +66,6 @@ body {
   width: auto;
 }
 
-.person.open {
-  width: auto;
-}
-
 .person img {
   width: 40px;
   height: 40px;
@@ -87,60 +83,4 @@ body {
   font-size: 11px;
   color: rgba(0, 0, 0, 0.54);
   text-transform: uppercase;
-}
-
-.person.joyce {
-  border-color: #FFC107;
-}
-
-.person.picasso {
-  border-color: #FFEB3B;
-}
-
-.person.freud {
-  border-color: #4CAF50;
-}
-
-.person.dali {
-  border-color: #00BCD4;
-}
-
-.person.einstein {
-  border-color: #FF4081;
-}
-
-.person.hemingway {
-  border-color: #8BC34A;
-}
-
-.person.ghandi {
-  border-color: #FF9800;
-}
-
-// by anton
-
-div.bottom-bar {
-  z-index: 2;
-}
-
-input#years {
-  width: 100%;
-}
-
-ol#years-labels {
-  list-style: none;
-}
-
-ol#years-labels li {
-  display: inline-block;
-  position: absolute;
-}
-
-ol#lifelines {
-  list-style: none;
-}
-
-ol#lifelines li {
-  display: block;
-  position: relative;
 }

@@ -12,6 +12,26 @@
       [:div.mapboxgl-popup-tip {
         :display "none"
         }]
+      [:.overlay {
+        :z-index 1
+      }]
+      [:.people-bar {
+        :display "block"
+        :z-index 2
+        :max-width "200px"
+        ; :position "relative"
+        }
+        [:ul {
+          :list-style "none"
+          }
+          [:li {
+            :display "block"
+            }]
+          ]
+        ]
+      [:div.mapboxgl-popup {
+        :z-index 1
+      }]
       [:div.mapboxgl-popup-content {
         :padding 0
         :background "inherit"
@@ -23,14 +43,29 @@
         :height "16px"
         :border-radius "8px"
         :padding 0
-        }]
+        :position "relative"
+        }
+        [:div.person {
+          :position "absolute"
+          :top "-20px"
+          :left "-30px"
+          :display "none"
+          }
+        ]
+        [:&:hover
+          [:div.person {
+              :display "block"
+            }]
+        ]
+      ]
       [:img.avatar {
         :width "30px"
         :border-radius "15px"
       }]
-      [:div#years-control {
-        :width "100%"
-        :position "relative"
+      [:div.bottom-bar {
+        ; :width "100%"
+        ; :position "absolute"
+        :z-index 2
       }]
       [:input#years {
         :width "100%"
@@ -53,13 +88,4 @@
           }
         ]
       ]
-      [:div#people {
-        :display "block"
-        :z-index 1
-        :position "relative"
-        }
-        [:ul {
-          :list-style "none"
-          }]
-        ]
     ]))
