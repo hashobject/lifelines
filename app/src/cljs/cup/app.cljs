@@ -449,7 +449,7 @@
               :curr-people people-to-popups))))
 
 (defn year-change-handler [e]
-  (println "attached listener")
+  (println "attached listener event")
   (let [new-year (dommy/value (sel1 :#years))
         curr-year (:curr-year @state)
         curr-people (:curr-people @state)]
