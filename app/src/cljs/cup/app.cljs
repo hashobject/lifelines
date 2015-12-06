@@ -1,5 +1,6 @@
 (ns cup.app
-  (:require [dommy.core :as dommy :refer-macros [sel sel1]]
+  (:require [clojure.set :as cs]
+            [dommy.core :as dommy :refer-macros [sel sel1]]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
@@ -159,7 +160,7 @@
     items))
 
 
-(def state
+(defonce state
   (atom {
       :map nil
       :curr-year 1890
@@ -182,16 +183,34 @@
         (add-all-to-map people-to-popups app-map)
         people-to-popups)))
 
+(defn filter-people-by-names [people names]
+  (filter
+    (fn [people]
+      (contains? names (:name people)))
+    people))
+
+
+
 (defn render-people [new-year]
   (println "render people on the map for" new-year)
   (if-let [prev-year (:prev-year @state)]
     ; do something when prev year exists
     (do
       (println "previous data found. more comple logic is coming")
-      (let [people (people-by-year expanded-people-data new-year)
-            prev-people (:prev-people @state)]
-        (println "people for the prev year" (map :name prev-people) prev-year)
-        (println "people for the new year" (map :name people) new-year)
+      (let [app-map (:map @state)
+            people (people-by-year expanded-people-data new-year)
+            prev-people (:prev-people @state)
+            prev-names (set (map :name prev-people))
+            new-names (set (map :name people))
+            names-to-delete (cs/difference prev-names new-names)
+            names-to-create (cs/difference new-names prev-names)
+            people-to-create (filter-people-by-names people names-to-create)
+            created-people-to-popups (create-people-controls people-to-create)]
+        (println "people for the prev year" prev-names prev-year)
+        (println "people for the new year" new-names new-year)
+        (println "names to delete" names-to-delete)
+        (println "names to create" names-to-create (count people-to-create))
+        (add-all-to-map created-people-to-popups app-map)
       )
       )
     ; first-time render
@@ -201,16 +220,19 @@
               :curr-people people-to-popups))))
 
 (defn year-change-handler [e]
+  (println "attached listener")
   (let [new-year (dommy/value (sel1 :#years))
         curr-year (:curr-year @state)
         curr-people (:curr-people @state)]
     (println "year-changed from" curr-year "to" new-year state)
     (println "changed prev year and prev people" curr-people)
+    (println "transaction. before" (:curr-year @state) (:prev-year @state) (map :name (:prev-people @state)))
     (swap! state assoc
             :curr-year new-year
             :prev-year curr-year
             :curr-people []
             :prev-people curr-people)
+    (println "transaction. after" (:curr-year @state) (:prev-year @state) (map :name (:prev-people @state)))
     (render-people new-year)))
 
 (defn create-map []
@@ -225,15 +247,17 @@
     ; save map into windown
     (aset js/window "appMap" app-map)))
 
+
 (create-map)
 (render-people (:curr-year @state))
 
-(dommy/unlisten! (sel1 :#years) :change year-change-handler)
-(dommy/listen! (sel1 :#years) :change year-change-handler)
+;(dommy/unlisten! (sel1 :#years) :change year-change-handler)
+
 (println "exec")
 (defn init []
-  (println "init")
 
+  (println "init")
+  (dommy/listen! (sel1 :#years) :change year-change-handler)
 
   (om/root widget
           {:text ""}
