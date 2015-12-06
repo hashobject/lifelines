@@ -598,13 +598,6 @@
   (enable-console-print!)
   (println "init")
   (dommy/listen! (sel1 :#years) :change year-change-handler)
-  ; (dommy/listen! [(sel1 :body) :.person-marker]
-  ;   :click (fn [e]
-  ;     (let [$person-marker (.-selectedTarget e)
-  ;           name (dommy/attr $person-marker "data-name")]
-  ;       (println "clicked>>>>" person-marker name)
-  ;     )
-  ;   ))
   (om/root people-widget
           state
           {:target (sel1 :.people-bar)}))
