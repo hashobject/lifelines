@@ -48,13 +48,13 @@
   })
 
 (def people-data '(
-  {:name "Mahatma Gandhi"
-   :link "https://en.wikipedia.org/wiki/Mahatma_Gandhi"
-   :avatar "img/gandhi.png"
-   :color "#FF9800"
-   :locations {
-    "1888-1891" "London"
-    }}
+  ; {:name "Mahatma Gandhi"
+  ;  :link "https://en.wikipedia.org/wiki/Mahatma_Gandhi"
+  ;  :avatar "img/gandhi.png"
+  ;  :color "#FF9800"
+  ;  :locations {
+  ;   "1888-1891" "London"
+  ;   }}
   {:name "Gertrude Stein"
    :link "https://en.wikipedia.org/wiki/Gertrude_Stein"
    :avatar "img/stein.png"
@@ -469,8 +469,8 @@
 (defn create-map []
   (aset js/mapboxgl "accessToken" "pk.eyJ1IjoiaGFzaG9iamVjdCIsImEiOiJjaWh0ZWU4MjkwMTdsdGxtMWIzZ3hnbnVqIn0.RQjfkzc1hI2UuR0vzjMtJQ")
   (let [props (js-obj "container" "map"
-                      "zoom" 1
-                      "center" (clj->js [12.496366 41.902784])
+                      "zoom" 2
+                      "center" (clj->js [-15.496366 41.902784])
                       "style" "mapbox://styles/mapbox/streets-v8")
         app-map (js/mapboxgl.Map. props)]
     ; save map into state atom
