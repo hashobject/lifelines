@@ -19,7 +19,6 @@
         :display "block"
         :z-index 2
         :max-width "200px"
-        ; :position "relative"
         }
         [:ul {
           :list-style "none"
@@ -36,18 +35,10 @@
         :padding 0
         :background "inherit"
         :box-shadow "none"
-        }]
-      [:div.person-marker {
-        :display "block"
-        :width "16px"
-        :height "16px"
-        :border-radius "8px"
-        :padding 0
-        :position "relative"
         }
         [:div.person {
           :position "absolute"
-          :top "-20px"
+          :top "-55px"
           :left "-30px"
           :display "none"
           }
@@ -57,6 +48,15 @@
               :display "block"
             }]
         ]
+      ]
+      [:div.person-marker {
+        :display "block"
+        :width "16px"
+        :height "16px"
+        :border-radius "8px"
+        :padding 0
+        :position "relative"
+        }
       ]
       [:img.avatar {
         :width "30px"

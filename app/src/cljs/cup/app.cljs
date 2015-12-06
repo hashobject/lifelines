@@ -7,15 +7,18 @@
 (enable-console-print!)
 
 (def cities {
-  "Paris" [2.352222 48.856614]
-  "London" [-0.127758 51.507351]
-  "Zurich" [8.541694 47.376887]
-  "Bern" [7.447447 46.947974]
   "Berlin" [13.404954 52.520007]
+  "Bern" [7.447447 46.947974]
+
+  "London" [-0.127758 51.507351]
+
+  "Paris" [2.352222 48.856614]
   "Princeton" [-74.667223 40.357298]
-  "Trieste" [13.776818 45.649526]
   "Rome" [12.496366 41.902784]
+  "Trieste" [13.776818 45.649526]
+
   "Vienna" [16.373819 48.208174]
+  "Zurich" [8.541694 47.376887]
   })
 
 (def people-data '(
@@ -37,10 +40,16 @@
    :avatar "/img/einstein.png"
    :color "#FF4081"
    :locations {
+    "1879-1880" "Ulm"
+    "1880-1894" "Munich"
+    "1894-1895" "Pavia"
+    "1895-1896" "Aarau"
     "1896-1900" "Zurich"
-    "1900-1904" "Bern"
+    "1900-1905" "Bern"
     "1905-1914" "Zurich"
-    "1914-1921" "Berlin"
+    "1911-1912" "Prague"
+    "1912-1914" "Zurich"
+    "1914-1933" "Berlin"
     "1933-1955" "Princeton"
    }}
  {:name "James Joyce"
@@ -120,6 +129,10 @@
           [year location])
         years))))
 
+(defn sort-set [c]
+  (sort (set c)))
+
+
 (defn flatten-one-level [coll]
   (mapcat  #(if (sequential? %) % [%]) coll))
 
@@ -132,6 +145,9 @@
    (true? from-end) (last all-idxs)
    (true? all)      all-idxs
    :else            (first all-idxs))))
+
+   (defn find-all-cities [people]
+     (sort-set (flatten (map #(vals (:locations %)) people))))
 
 (defn expand-locations [locations]
   (flatten-one-level
@@ -187,17 +203,18 @@
         person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
         ;(str "<img width='40px' src='" avatar "'>")
         html (str
-          "<div class='person-marker' "
-          " data-name='" name "' "
-          "style='background-color:" color "'>"
-          "<div class='person' style='border-color='"
+          "<div class='person open' style='border-color:"
           color
           "'>"
           "<img class='avatar' src='" avatar "'>"
           "<div class='data'>"
           "<span class='name'>" name "</span>"
+          "<span class='location'>" (:location person) "</span>"
           "</div>"
           "</div>"
+          "<div class='person-marker' "
+          " data-name='" name "' "
+          "style='background-color:" color "'>"
           "</div>")]
         (do
           (.setLngLat person-popup (clj->js coordinates))
@@ -355,9 +372,6 @@
 (create-map)
 (render-people (:curr-year @state))
 
-(defn sort-set [c]
-  (sort (set c)))
-
 (defn find-all-byears [people]
   (sort-set
     (map :byear people)))
@@ -437,6 +451,7 @@
 
 (println "exec")
 
+(println "all cities" (find-all-cities people-data))
 (render-timeline)
 (defn init []
   (enable-console-print!)
