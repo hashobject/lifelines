@@ -22,6 +22,7 @@ ul, ol {
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
   color: white;
   width: 165px;
+  z-index: 2;
 }
 
 .about-project h1 {
@@ -44,7 +45,7 @@ ul, ol {
   left: 0;
   right: 0;
   height: 72px;
-  padding: 16px;
+  padding: 16px 72px 0 16px;
   box-sizing: border-box;
   background-color: white;
   z-index: 100;
@@ -54,9 +55,15 @@ ul, ol {
 .people-bar {
   position: relative;
   margin-left: 16px;
-  max-width: 210px;
+  max-width: 178px;
   z-index: 2;
 }
+
+.people-bar ul {
+  padding: 0;
+  margin: 0;
+}
+
 .people-bar ul li {
   display: block;
 }
@@ -72,6 +79,8 @@ ul, ol {
   height: 40px;
   overflow: hidden;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  position: relative;
 }
 
 .person:hover {
@@ -79,8 +88,8 @@ ul, ol {
 }
 
 .person.open {
-  width: auto;
-  width: 210px;
+  width: 178px;
+  z-index: 99;
 }
 
 .person img {
@@ -93,13 +102,21 @@ ul, ol {
 .person .data {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 16px;
+  margin: 0 16px 0 8px;
 }
 
 .person .name {
   font-size: 11px;
   color: rgba(0, 0, 0, 0.54);
   text-transform: uppercase;
+  display: block;
+  line-height: 14px;
+}
+
+.person .location {
+  display: block;
+  line-height: 14px;
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .person.joyce {
@@ -130,13 +147,32 @@ ul, ol {
   border-color: #FF9800;
 }
 
-div.person-marker {
+.mapboxgl-popup-content div.person {
+  position: absolute;
+  top: -56px;
+  left: -18px;
+  display: none;
+}
+
+.mapboxgl-popup-content:hover div.person {
+  display: block;
+}
+
+.person-marker {
   display: block;
   width: 8px;
   height: 8px;
   border-radius: 4px;
   padding: 0;
   position: relative;
+  cursor: pointer;
+}
+
+.current-year {
+  position: absolute;
+  right: 16px;
+  top: 25%;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .years-labels {

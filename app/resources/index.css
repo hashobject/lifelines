@@ -45,7 +45,7 @@ ul, ol {
   left: 0;
   right: 0;
   height: 72px;
-  padding: 16px;
+  padding: 16px 72px 0 16px;
   box-sizing: border-box;
   background-color: white;
   z-index: 100;
@@ -166,6 +166,13 @@ ul, ol {
   padding: 0;
   position: relative;
   cursor: pointer;
+}
+
+.current-year {
+  position: absolute;
+  right: 16px;
+  top: 25%;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .years-labels {

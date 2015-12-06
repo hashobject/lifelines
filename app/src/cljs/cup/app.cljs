@@ -58,7 +58,7 @@
   {:name "Gertrude Stein"
    :link "https://en.wikipedia.org/wiki/Gertrude_Stein"
    :avatar "img/stein.png"
-   :color "#00BCD4"
+   :color "#9C27B0"
    :locations {
     "1874-1877" "Allegheny, Pennsylvania"
     "1877-1877" "Vienna"
