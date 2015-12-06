@@ -50,13 +50,13 @@
 (def people-data '(
   {:name "Mahatma Gandhi"
    :link "https://en.wikipedia.org/wiki/Mahatma_Gandhi"
-   :avatar "/img/gandhi.png"
+   :avatar "img/gandhi.png"
    :color "#FF9800"
    :locations {
     "1888-1891" "London"}}
   {:name "Ernest Hemingway"
    :link "https://en.wikipedia.org/wiki/Ernest_Hemingway"
-   :avatar "/img/hemingway.png"
+   :avatar "img/hemingway.png"
    :color "#8BC34A"
    :locations {
     "1899-1917" "Oak Park, Illinois"
@@ -91,7 +91,7 @@
     }}
   {:name "Albert Einstein"
    :link "https://en.wikipedia.org/wiki/Albert_Einstein"
-   :avatar "/img/einstein.png"
+   :avatar "img/einstein.png"
    :color "#FF4081"
    :locations {
     "1879-1880" "Ulm"
@@ -108,7 +108,7 @@
    }}
  {:name "James Joyce"
   :link "https://en.wikipedia.org/wiki/James_Joyce"
-  :avatar "/img/joyce.png"
+  :avatar "img/joyce.png"
   :color "#FFC107"
   :locations {
    "1882-1904" "Dublin"
@@ -127,7 +127,7 @@
   }}
   {:name "Salvador Dalí"
    :link "https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD"
-   :avatar "/img/dali.png"
+   :avatar "img/dali.png"
    :color "#00BCD4"
    :locations {
     "1904-1922" "Figueres"
@@ -153,7 +153,7 @@
    }}
   {:name "Sigmund Freud"
    :link "https://en.wikipedia.org/wiki/Sigmund_Freud"
-   :avatar "/img/freud.png"
+   :avatar "img/freud.png"
    :color "#4CAF50"
    :locations {
      "1855-1859" "Příbor"
@@ -163,7 +163,7 @@
      }}
   {:name "Pablo Picasso"
    :link "https://en.wikipedia.org/wiki/Pablo_Picasso"
-   :avatar "/img/picasso.png"
+   :avatar "img/picasso.png"
    :color "#FFEB3B"
    :locations {
      "1881-1891" "Málaga"
@@ -371,7 +371,7 @@
   (println "render for year" year)
   (let [app-map (:map @state)
         people (people-by-year expanded-people-data year)]
-      (render-people-for-year people)))
+      (render-people-for-year people year)))
 
 (defn filter-people-by-names [people names]
   (filter
