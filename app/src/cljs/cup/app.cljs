@@ -106,7 +106,7 @@
     "1939-1940" "Havana"
     "1940-1941" "Ketchum, Idaho"
     "1941-1945" "London"
-    "1945-1954" "Havana"
+    "1945-1953" "Havana" ; probably 1954
     "1954-1954" "Kinshasa"
     "1954-1956" "Havana"
     "1956-1957" "Paris"
@@ -479,7 +479,7 @@
   (aset js/mapboxgl "accessToken" "pk.eyJ1IjoiaGFzaG9iamVjdCIsImEiOiJjaWh0ZWU4MjkwMTdsdGxtMWIzZ3hnbnVqIn0.RQjfkzc1hI2UuR0vzjMtJQ")
   (let [props (js-obj "container" "map"
                       "zoom" 2
-                      "center" (clj->js [-21.496366 41.902784])
+                      "center" (clj->js [-21.496366 35.902784])
                       "style" "mapbox://styles/mapbox/streets-v8")
         app-map (js/mapboxgl.Map. props)]
     ; save map into state atom
