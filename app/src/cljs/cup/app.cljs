@@ -184,9 +184,11 @@
     (map
       (fn [person]
         (let [locations (:locations person)
-              expanded (expand-locations locations)
+              expanded (sort-by first (expand-locations locations))
               byear (->> expanded first first)
               dyear (->> expanded last first)]
+              ;(println "selected byear for" (:name person) byear expanded)
+              ;(println "selected dyear for" (:name person) dyear)
               (assoc person
                 :locations expanded
                 :byear byear
@@ -476,8 +478,9 @@
 
 (println "all cities>>" (find-all-cities people-data))
 
-(println "years>>>" (sort-set (map :dyear expanded-people-data)))
-(println "years2>>>" (sort-set (map :byear expanded-people-data)))
+(println "byears>>>" (sort-set (map :byear expanded-people-data)))
+(println "dyears>>>" (sort-set (map :dyear expanded-people-data)))
+
 
 (render-timeline)
 (defn init []
