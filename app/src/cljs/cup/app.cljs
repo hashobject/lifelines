@@ -98,6 +98,10 @@
      }}
    ))
 
+(defn find-all-cities [people]
+  (set (flatten (map #(vals (:locations %)) people))))
+
+
 (defn expand-location [location-item]
   (let [years-str (first location-item)
         location (second location-item)
@@ -430,6 +434,7 @@
 
 (println "exec")
 
+(println "all cities" (find-all-cities people-data))
 (render-timeline)
 (defn init []
   (enable-console-print!)
