@@ -5,29 +5,9 @@
 (defstyles screen
   (let [body (rule :body)]
     [
-      (body
-       {:font-family "Helvetica Neue"
-        :font-size   "16px"
-        :line-height 1.5})
       [:div.mapboxgl-popup-tip {
         :display "none"
         }]
-      [:.overlay {
-        :z-index 1
-      }]
-      [:.people-bar {
-        :display "block"
-        :z-index 2
-        :max-width "200px"
-        }
-        [:ul {
-          :list-style "none"
-          }
-          [:li {
-            :display "block"
-            }]
-          ]
-        ]
       [:div.mapboxgl-popup {
         :z-index 1
       }]
@@ -58,34 +38,4 @@
         :position "relative"
         }
       ]
-      [:img.avatar {
-        :width "30px"
-        :border-radius "15px"
-      }]
-      [:div.bottom-bar {
-        ; :width "100%"
-        ; :position "absolute"
-        :z-index 2
-      }]
-      ; [:input#years {
-      ;   :width "100%"
-      ; }]
-      ; [:ol#years-labels {
-      ;   :list-style "none"
-      ;   }
-      ;   [:li {
-      ;     :display "inline-block"
-      ;     :position "absolute"
-      ;     }
-      ;   ]
-      ; ]
-      ; [:ol#lifelines {
-      ;   :list-style "none"
-      ;   }
-      ;   [:li {
-      ;     :display "block"
-      ;     :position "relative"
-      ;     }
-      ;   ]
-      ; ]
     ]))

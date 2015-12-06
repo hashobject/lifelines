@@ -2,6 +2,9 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+ul, ol {
+  list-style: none;
+}
 .overlay {
   position: absolute;
   top: 0;
@@ -9,6 +12,7 @@ body {
   right: 0;
   left: 0;
   background-image: linear-gradient(rgba(26, 35, 126, 0.75), rgba(74, 20, 140, 0.75));
+  z-index: 1;
 }
 
 .about-project {
@@ -50,6 +54,11 @@ body {
 .people-bar {
   position: relative;
   margin-left: 16px;
+  max-width: 210px;
+  z-index: 2;
+}
+.people-bar ul li {
+  display: block;
 }
 
 .person {
@@ -71,6 +80,7 @@ body {
 
 .person.open {
   width: auto;
+  width: 210px;
 }
 
 .person img {
