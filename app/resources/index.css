@@ -54,7 +54,7 @@ ul, ol {
 .people-bar {
   position: relative;
   margin-left: 16px;
-  max-width: 218px;
+  max-width: 178px;
   z-index: 2;
 }
 
@@ -79,6 +79,7 @@ ul, ol {
   overflow: hidden;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.35);
   cursor: pointer;
+  position: relative;
 }
 
 .person:hover {
@@ -86,8 +87,8 @@ ul, ol {
 }
 
 .person.open {
-  width: auto;
-  width: 210px;
+  width: 178px;
+  z-index: 99;
 }
 
 .person img {
@@ -107,6 +108,14 @@ ul, ol {
   font-size: 11px;
   color: rgba(0, 0, 0, 0.54);
   text-transform: uppercase;
+  display: block;
+  line-height: 14px;
+}
+
+.person .location {
+  display: block;
+  line-height: 14px;
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .person.joyce {
