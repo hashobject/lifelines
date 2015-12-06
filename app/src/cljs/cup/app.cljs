@@ -115,10 +115,10 @@
               location-for-year (find-location-for-year year locations)]
               (if (nil? location-for-year)
                 (do
-                  (println (:name person) "had no location in" year)
+                  ;(println (:name person) "had no location in" year)
                   person)
                 (do
-                  (println (:name person) "was in" (second location-for-year) "in" year)
+                  ;(println (:name person) "was in" (second location-for-year) "in" year)
                   (assoc person :year (first location-for-year)
                                 :location (second location-for-year))))))
       people-data)))
@@ -188,8 +188,10 @@
     ; do something when prev year exists
     (do
       (println "previous data found. more comple logic is coming")
-      (let [people (people-by-year expanded-people-data new-year)]
-        (println "new people" (count people) new-year)
+      (let [people (people-by-year expanded-people-data new-year)
+            prev-people (:prev-people @state)]
+        (println "people for the prev year" (map :name prev-people) prev-year)
+        (println "people for the new year" (map :name people) new-year)
       )
       )
     ; first-time render
@@ -202,7 +204,8 @@
   (let [new-year (dommy/value (sel1 :#years))
         curr-year (:curr-year @state)
         curr-people (:curr-people @state)]
-    (println "year-changed from " curr-year " to " new-year state)
+    (println "year-changed from" curr-year "to" new-year state)
+    (println "changed prev year and prev people" curr-people)
     (swap! state assoc
             :curr-year new-year
             :prev-year curr-year
@@ -225,12 +228,12 @@
 (create-map)
 (render-people (:curr-year @state))
 
+(dommy/unlisten! (sel1 :#years) :change year-change-handler)
+(dommy/listen! (sel1 :#years) :change year-change-handler)
+(println "exec")
 (defn init []
   (println "init")
 
-
-  (dommy/unlisten! (sel1 :#years) :change year-change-handler)
-  (dommy/listen! (sel1 :#years) :change year-change-handler)
 
   (om/root widget
           {:text ""}
