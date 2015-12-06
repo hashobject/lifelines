@@ -22,6 +22,7 @@ ul, ol {
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
   color: white;
   width: 165px;
+  z-index: 2;
 }
 
 .about-project h1 {

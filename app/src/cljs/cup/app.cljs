@@ -53,7 +53,24 @@
    :avatar "/img/gandhi.png"
    :color "#FF9800"
    :locations {
-    "1888-1891" "London"}}
+    "1888-1891" "London"
+    }}
+  {:name "Gertrude Stein"
+   :link "https://en.wikipedia.org/wiki/Gertrude_Stein"
+   :avatar "/img/stein.png"
+   :color "#00BCD4"
+   :locations {
+    "1874-1877" "Allegheny, Pennsylvania"
+    "1877-1877" "Vienna"
+    "1877-1878" "Paris"
+    "1878-1892" "Oakland, California"
+    "1892-1893" "Baltimore, Maryland"
+    "1893-1897" "Cambridge, Massachusetts"
+    "1897-1902" "Baltimore, Maryland"
+    "1902-1903" "London"
+    "1903-1903" "Paris"
+    "1903-1946" "Neuilly-sur-Seine"
+    }}
   {:name "Ernest Hemingway"
    :link "https://en.wikipedia.org/wiki/Ernest_Hemingway"
    :avatar "/img/hemingway.png"
@@ -105,26 +122,26 @@
     "1912-1914" "Zurich"
     "1914-1933" "Berlin"
     "1933-1955" "Princeton"
-   }}
- {:name "James Joyce"
-  :link "https://en.wikipedia.org/wiki/James_Joyce"
-  :avatar "/img/joyce.png"
-  :color "#FFC107"
-  :locations {
-   "1882-1904" "Dublin"
-   "1904-1904" "Zurich"
-   "1904-1905" "Pula"
-   "1905-1906" "Trieste"
-   "1906-1907" "Rome"
-   "1907-1909" "Trieste"
-   "1909-1910" "Dublin"
-   "1910-1915" "Trieste"
-   "1915-1920" "Zurich"
-   "1920-1931" "Paris"
-   "1931-1931" "London"
-   "1931-1940" "Paris"
-   "1940-1941" "Zurich"
-  }}
+    }}
+  {:name "James Joyce"
+   :link "https://en.wikipedia.org/wiki/James_Joyce"
+   :avatar "/img/joyce.png"
+   :color "#FFC107"
+   :locations {
+    "1882-1904" "Dublin"
+    "1904-1904" "Zurich"
+    "1904-1905" "Pula"
+    "1905-1906" "Trieste"
+    "1906-1907" "Rome"
+    "1907-1909" "Trieste"
+    "1909-1910" "Dublin"
+    "1910-1915" "Trieste"
+    "1915-1920" "Zurich"
+    "1920-1931" "Paris"
+    "1931-1931" "London"
+    "1931-1940" "Paris"
+    "1940-1941" "Zurich"
+    }}
   {:name "Salvador Dalí"
    :link "https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD"
    :avatar "/img/dali.png"
@@ -150,32 +167,32 @@
     "1962-1982" "Port Lligat"
     "1982-1988" "Púbol"
     "1988-1989" "Figueres"
-   }}
+    }}
   {:name "Sigmund Freud"
    :link "https://en.wikipedia.org/wiki/Sigmund_Freud"
    :avatar "/img/freud.png"
    :color "#4CAF50"
    :locations {
-     "1855-1859" "Příbor"
-     "1859-1860" "Leipzig"
-     "1860-1938" "Vienna"
-     "1938-1939" "London"
-     }}
+    "1855-1859" "Příbor"
+    "1859-1860" "Leipzig"
+    "1860-1938" "Vienna"
+    "1938-1939" "London"
+    }}
   {:name "Pablo Picasso"
    :link "https://en.wikipedia.org/wiki/Pablo_Picasso"
    :avatar "/img/picasso.png"
    :color "#FFEB3B"
    :locations {
-     "1881-1891" "Málaga"
-     "1891-1895" "A Coruña"
-     "1895-1897" "Barcelona"
-     "1897-1900" "Madrid"
-     "1900-1901" "Paris"
-     "1901-1901" "Madrid"
-     "1901-1914" "Paris"
-     "1914-1918" "Avignon"
-     "1918-1973" "Paris"
-     }}
+    "1881-1891" "Málaga"
+    "1891-1895" "A Coruña"
+    "1895-1897" "Barcelona"
+    "1897-1900" "Madrid"
+    "1900-1901" "Paris"
+    "1901-1901" "Madrid"
+    "1901-1914" "Paris"
+    "1914-1918" "Avignon"
+    "1918-1973" "Paris"
+    }}
    ))
 
 (defn expand-location [location-item]
