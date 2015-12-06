@@ -40,7 +40,10 @@ body {
   left: 0;
   right: 0;
   height: 72px;
+  padding: 16px;
+  box-sizing: border-box;
   background-color: white;
+  z-index: 100;
   box-shadow: 0 -1px 10px 0 rgba(0, 0, 0, 0.3);
 }
 
@@ -87,4 +90,144 @@ body {
   font-size: 11px;
   color: rgba(0, 0, 0, 0.54);
   text-transform: uppercase;
+}
+
+.person.joyce {
+  border-color: #FFC107;
+}
+
+.person.picasso {
+  border-color: #FFEB3B;
+}
+
+.person.freud {
+  border-color: #4CAF50;
+}
+
+.person.dali {
+  border-color: #00BCD4;
+}
+
+.person.einstein {
+  border-color: #FF4081;
+}
+
+.person.hemingway {
+  border-color: #8BC34A;
+}
+
+.person.ghandi {
+  border-color: #FF9800;
+}
+
+.years-labels {
+  list-style: none;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.54);
+  position: relative;
+  margin: 0;
+  padding: 0;
+  top: -19px;
+}
+
+.years-labels li {
+  display: inline-block;
+  position: absolute;
+}
+
+.lifelines {
+  margin: 0;
+}
+
+.lifelines {
+  list-style: none;
+  padding: 0;
+}
+
+.lifelines li {
+  display: block;
+  position: relative;
+  background-color: #E0E0E0;
+}
+
+.lifelines li div {
+  position: relative;
+}
+
+input#years {
+  position: relative;
+  top: -41px;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 8px 0;
+  width: 100%;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 0;
+  cursor: pointer;
+  animate: 0.2s;
+  background-color: transparent;
+}
+input[type=range]::-webkit-slider-thumb {
+  height: 32px;
+  width: 8px;
+  border-radius: 4px;
+  background: #303F9F;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background-color: transparent;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 0;
+  cursor: pointer;
+  animate: 0.2s;
+  background-color: transparent;
+  opacity: 0;
+}
+input[type=range]::-moz-range-thumb {
+  height: 32px;
+  width: 8px;
+  border-radius: 8px;
+  background: #303F9F;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 0;
+  cursor: pointer;
+  animate: 0.2s;
+  background-color: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background-color: transparent;
+}
+input[type=range]::-ms-fill-upper {
+  background-color: transparent;
+}
+input[type=range]::-ms-thumb {
+  height: 32px;
+  width: 8px;
+  border-radius: 8px;
+  background: #303F9F;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background-color: transparent;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background-color: transparent;
 }

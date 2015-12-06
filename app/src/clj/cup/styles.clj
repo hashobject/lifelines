@@ -67,25 +67,25 @@
         ; :position "absolute"
         :z-index 2
       }]
-      [:input#years {
-        :width "100%"
-      }]
-      [:ol#years-labels {
-        :list-style "none"
-        }
-        [:li {
-          :display "inline-block"
-          :position "absolute"
-          }
-        ]
-      ]
-      [:ol#lifelines {
-        :list-style "none"
-        }
-        [:li {
-          :display "block"
-          :position "relative"
-          }
-        ]
-      ]
+      ; [:input#years {
+      ;   :width "100%"
+      ; }]
+      ; [:ol#years-labels {
+      ;   :list-style "none"
+      ;   }
+      ;   [:li {
+      ;     :display "inline-block"
+      ;     :position "absolute"
+      ;     }
+      ;   ]
+      ; ]
+      ; [:ol#lifelines {
+      ;   :list-style "none"
+      ;   }
+      ;   [:li {
+      ;     :display "block"
+      ;     :position "relative"
+      ;     }
+      ;   ]
+      ; ]
     ]))

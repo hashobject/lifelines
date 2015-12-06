@@ -16,7 +16,7 @@
   "Princeton" [-74.667223 40.357298]
 
   "Rome" [12.496366 41.902784]
-  
+
   "Trieste" [13.776818 45.649526]
 
   "Vienna" [16.373819 48.208174]
@@ -416,12 +416,12 @@
         offset (* index year-width)
         life-duration (- (:dyear person) (:byear person))
         width (* life-duration year-width)
-        html (str "<li style='left:"
+        html (str "<li><div style='left:"
                   offset "px;"
                   "background-color:" (:color person)
                   ";height: 3px;"
                   "width:" width "px;"
-                  "'></li>")]
+                  "'></div></li>")]
         html))
 
 (defn render-people-lifelines [people all-years year-width]
@@ -444,8 +444,8 @@
         html-str))
 
 (defn render-timeline []
-  (let [$range-labels (sel1 :#years-labels)
-        $lifelines (sel1 :#lifelines)
+  (let [$range-labels (sel1 :.years-labels)
+        $lifelines (sel1 :.lifelines)
         $range (sel1 :#years)
         $range-width (-> $range dommy/bounding-client-rect :width)
         touch-years (find-all-touch-years expanded-people-data)
