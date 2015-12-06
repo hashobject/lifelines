@@ -19,7 +19,6 @@
         :display "block"
         :z-index 2
         :max-width "200px"
-        ; :position "relative"
         }
         [:ul {
           :list-style "none"

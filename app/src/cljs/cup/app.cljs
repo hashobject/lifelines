@@ -37,6 +37,10 @@
    :avatar "/img/einstein.png"
    :color "#FF4081"
    :locations {
+    "1879-1880" "Ulm"
+    "1880-1894" "Munich"
+    "1894-1895" "Pavia"
+    "1895-1896" "Aarau"
     "1896-1900" "Zurich"
     "1900-1904" "Bern"
     "1905-1914" "Zurich"
