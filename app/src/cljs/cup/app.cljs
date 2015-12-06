@@ -497,11 +497,13 @@
             curr-people-names)]
         people))
 
+
 (defn people-widget [data owner]
   (reify
     om/IRender
     (render [this]
-      (let [people (resolve-people data)]
+      (let [people (resolve-people data)
+            sorted-people (sort-by :byear people)]
         (apply dom/ul nil
           (map
             (fn [person]
@@ -511,7 +513,7 @@
                   (dom/span #js {:className "name"} (:name person)))
                 )
               )
-            people)
+            sorted-people)
           )))))
 
 (create-map)
