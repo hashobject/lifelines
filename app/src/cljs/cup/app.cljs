@@ -7,20 +7,44 @@
 (enable-console-print!)
 
 (def cities {
-  "Berlin" [13.404954 52.520007]
-  "Bern" [7.447447 46.947974]
-
-  "London" [-0.127758 51.507351]
-
-  "Paris" [2.352222 48.856614]
-  "Princeton" [-74.667223 40.357298]
-
-  "Rome" [12.496366 41.902784]
-
-  "Trieste" [13.776818 45.649526]
-
-  "Vienna" [16.373819 48.208174]
-  "Zurich" [8.541694 47.376887]
+  "Aarau" [47.390434,8.045701]
+  "Avignon" [43.949317,4.805528]
+  "Barcelona" [41.385064,2.173403]
+  "Berlin" [52.520007,13.404954]
+  "Bern" [46.947974,7.447447]
+  "Bordeaux" [44.837789,-0.57918]
+  "Chicago" [41.878114,-87.629798]
+  "Dublin" [53.349805,-6.26031]
+  "Figueres" [42.265507,2.958105]
+  "Fossalta di Piave" [45.646751,12.513665]
+  "Havana" [23.05407,-82.345189]
+  "Kansas City, Missouri" [39.099727,-94.578567]
+  "Ketchum, Idaho" [43.68074,-114.363662]
+  "Key West" [24.555059,-81.779987]
+  "Leipzig" [51.339696,12.373075]
+  "London" [51.507351,-0.127758]
+  "Madrid" [40.416775,-3.70379]
+  "Milan" [45.465422,9.185924]
+  "Munich" [48.135125,11.581981]
+  "Málaga" [36.721261,-4.421266]
+  "New York" [40.712784,-74.005941]
+  "Oak Park, Illinois" [41.885032,-87.784503]
+  "Pamplona" [42.812526,-1.645775]
+  "Paris" [48.856614,2.352222]
+  "Pavia" [45.184725,9.158207]
+  "Port Lligat" [42.296083,3.288227]
+  "Prague" [50.075538,14.4378]
+  "Princeton" [40.357298,-74.667223]
+  "Pula" [44.866623,13.849579]
+  "Púbol" [42.014498,2.982868]
+  "Příbor" [49.640936,18.144996]
+  "Rome" [41.902784,12.496366]
+  "Schruns" [47.080072,9.919807]
+  "Toronto" [43.653226,-79.383184]
+  "Trieste" [45.649526,13.776818]
+  "Ulm" [48.401082,9.987608]
+  "Vienna" [48.208174,16.373819]
+  "Zurich" [47.376887,8.541694]
   })
 
 (def people-data '(
@@ -195,6 +219,7 @@
               expanded (sort-by first (expand-locations locations))
               byear (->> expanded first first)
               dyear (->> expanded last first)]
+              (println "locations for person" (:name person) expanded)
               ;(println "selected byear for" (:name person) byear expanded)
               ;(println "selected dyear for" (:name person) dyear)
               (assoc person
@@ -232,7 +257,8 @@
 
 
 (defn create-person-popup [coordinates person]
-  (let [name (:name person)
+  (let [lng-lat (reverse coordinates)
+        name (:name person)
         color (:color person)
         avatar (:avatar person)
         person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
@@ -252,7 +278,7 @@
           "style='background-color:" color "'>"
           "</div>")]
         (do
-          (.setLngLat person-popup (clj->js coordinates))
+          (.setLngLat person-popup (clj->js lng-lat))
           (.setHTML person-popup html)
           person-popup
           )))
@@ -484,10 +510,10 @@
 
 (println "exec")
 
-(println "all cities>>" (find-all-cities people-data))
+(println "all cities>>" (clojure.string/join "\n" (find-all-cities people-data)))
 
-(println "byears>>>" (sort-set (map :byear expanded-people-data)))
-(println "dyears>>>" (sort-set (map :dyear expanded-people-data)))
+;(println "byears>>>" (sort-set (map :byear expanded-people-data)))
+;(println "dyears>>>" (sort-set (map :dyear expanded-people-data)))
 
 
 (render-timeline)
