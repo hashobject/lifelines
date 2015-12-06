@@ -162,10 +162,13 @@
       people-data)))
 
 
-(defn create-person-popup [coordinates color]
+(defn create-person-popup [coordinates name color]
   (let [person-popup (js/mapboxgl.Popup. (js-obj "closeOnClick" false "closeButton" false))
         ;(str "<img width='40px' src='" avatar "'>")
-        html (str "<div class='person-marker' style='background-color:" color "'></div>")]
+        html (str
+          "<div class='person-marker' "
+          " data-name='" name "' "
+          "style='background-color:" color "'></div>")]
         (do
           (.setLngLat person-popup (clj->js coordinates))
           (.setHTML person-popup html)
@@ -174,7 +177,7 @@
 
 (defn render-person [person]
   (let [coordinates (get cities (:location person))
-        ui-control (create-person-popup coordinates (:color person))]
+        ui-control (create-person-popup coordinates (:name person) (:color person))]
     {:name (:name person)
      :control ui-control}))
 
@@ -398,8 +401,6 @@
     (dommy/set-attr! $range :max max-year)
     (dommy/set-html! $range-labels labels-html)
     (dommy/set-html! $lifelines lifelines-html)
-    (println "width>>>>" $range-width years min-year year-width)
-    (println "xxxx>>>>" labels-html)
   ))
 ;(dommy/unlisten! (sel1 :#years) :change year-change-handler)
 
@@ -411,8 +412,12 @@
   (enable-console-print!)
   (println "init")
   (dommy/listen! (sel1 :#years) :change year-change-handler)
-  (dommy/listen! (sel1 :body) :click (fn [el]
-    (println "clicked>>>>" el)
+  (dommy/listen! [(sel1 :body) :.person-marker]
+    :click (fn [e]
+      (let [$person-marker (.-selectedTarget e)
+            name (dommy/attr $person-marker "data-name")]
+        (println "clicked>>>>" person-marker name)
+      )
     ))
   (om/root people-widget
           state

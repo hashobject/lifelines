@@ -15,9 +15,6 @@
       [:.overlay {
         :z-index 1
       }]
-      [:.bottom-bar {
-        :z-index 2
-        }]
       [:.people-bar {
         :display "block"
         :z-index 2
@@ -51,9 +48,10 @@
         :width "30px"
         :border-radius "15px"
       }]
-      [:div#years-control {
-        :width "100%"
-        :position "relative"
+      [:div.bottom-bar {
+        ; :width "100%"
+        ; :position "absolute"
+        :z-index 2
       }]
       [:input#years {
         :width "100%"
