@@ -125,8 +125,14 @@
     (map
       (fn [person]
         (let [locations (:locations person)
-              expanded (expand-locations locations)]
-              (assoc person :locations expanded)))
+              expanded (expand-locations locations)
+              byear (->> expanded first first)
+              dyear (->> expanded last first)]
+              (assoc person
+                :locations expanded
+                :byear byear
+                :dyear dyear
+                )))
       people-data)))
 
 (defn find-location-for-year [year locations]
@@ -316,17 +322,11 @@
 
 (defn find-all-byears [people]
   (sort-set
-    (map
-      (fn [person]
-        (-> person :locations first first))
-      people)))
+    (map :byear people)))
 
 (defn find-all-dyears [people]
   (sort-set
-    (map
-      (fn [person]
-        (-> person :locations last first))
-      people)))
+    (map :dyear people)))
 
 (defn find-all-touch-years [people]
   (sort
@@ -342,7 +342,14 @@
         min-year (first touch-years)
         max-year (last touch-years)
         all-years (sort-set (range min-year (inc max-year)))
-        rendered-years (map first (partition-all 5 all-years))
+        partition-size
+          (cond
+            (< $range-width 401) 20
+            (< $range-width 600) 10
+            (< $range-width 1000) 6
+            :else 5
+            )
+        rendered-years (map first (partition-all partition-size all-years))
         years-count (- max-year min-year)
         year-width (/ $range-width years-count)
         labels-html
